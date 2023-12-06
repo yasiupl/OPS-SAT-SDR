@@ -15,7 +15,7 @@ else
     echo "PID $(cat $HOME_DIR/exp_pid)"
     echo "Non-NMF experiment"
     echo "Starting $exp_id"
-    $HOME_DIR/start.sh | awk '{print strftime("[%d-%m-%Y %H:%M:%S.%f]"), $0}' >> $HOME_DIR/toGround/$logfile
+    $HOME_DIR/start.sh 2>&1 | awk '{print strftime("[%d-%m-%Y %H:%M:%S.%f]"), $0}' | tee -a $HOME_DIR/toGround/$logfile
     echo "$exp_id ended - exiting now"
 fi
 
