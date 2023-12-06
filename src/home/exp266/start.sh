@@ -11,22 +11,21 @@ HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
 
-./setup.sh
+#./setup.sh
 
 # Reconfigure the experiment
 mkdir -p output
 
-CONFIG="[SEPP_SDR_RX]
-carrier_frequency_GHz = 0.4352
-samp_freq_index = 0
-lpf_bw_cfg = 15
-gain_db = 60
-number_of_samples = 25000000
-calibrate_frontend = 0
-binary_path = $HOME_DIR/bin/process_samples
-output_path = output/sidlock_$id_"
-
-echo "$CONFIG" > config.ini
+# CONFIG="[SEPP_SDR_RX]
+# carrier_frequency_GHz = 0.4352
+# samp_freq_index = 0
+# lpf_bw_cfg = 15
+# gain_db = 60
+# number_of_samples = 25000000
+# calibrate_frontend = 0
+# binary_path = $HOME_DIR/bin/process_samples
+# output_path = output/sidlock_$id_"
+# echo "$CONFIG" > config.ini
 
 # Capture recording
 echo "Starting Recording"
