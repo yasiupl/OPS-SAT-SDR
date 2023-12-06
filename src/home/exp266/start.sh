@@ -34,7 +34,7 @@ echo "Starting Recording"
 export LD_PRELOAD=""
 
 
-sdr_recording_name=$(ls -t output/ | tail -n1)
+sdr_recording_name=$(ls -rt output/ | tail -n1)
 echo "Recording finished! result: $sdr_recording_name"
 
 sleep 3
@@ -47,7 +47,7 @@ echo "Storing the recording to eMMC"
 echo "Generate the waterfall"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
 ./renderfall.sh output/sidlock_* sdr_$id
-renderfall_name=$(ls -t toGround/ | tail -n1)
+renderfall_name=$(ls -rt toGround/ | tail -n1)
 
 # Cleanup
 echo "Finished, cleaning up"
