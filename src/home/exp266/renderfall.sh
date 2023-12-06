@@ -38,5 +38,6 @@ mkdir -p $OUTPUT
 FILENAME=${OUT_FILE}_${WINDOW}_${SIZE}
 echo $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUTPUT/$FILENAME.png"
-echo $COMMAND $ARGUMENTS
-export LD_PRELOAD=lib/libfftw3.so.3; $COMMAND $ARGUMENTS --verbose
+echo $BINARY $ARGUMENTS
+export LD_PRELOAD=lib/libfftw3.so.3
+$BINARY $ARGUMENTS --verbose
