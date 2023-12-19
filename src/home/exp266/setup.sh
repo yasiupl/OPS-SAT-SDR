@@ -1,15 +1,18 @@
 #!/usr/bin/env sh
-set +x
+set -x
 
 ## SDR-compatible Firmware:
 #0x00000223
 #0x00000202
 firmware=$(devmem 0xff200000)
+
+echo "Loaded firmware: $firmware"
+
 if [[ $firmware == "0x00000223" ]] || [[ $firmware == "0x00000202" ]]; then
-    echo "Firmware loaded"
+    echo "Correct firmware loaded (202/223)"
 else
-    echo "FPGA Firmware not loaded - loading will cause reboot"
-    exit
+    echo "FPGA Firmware not loaded - loading will cause reboot; Stopping."
+    exit -1
 fi
 cd /tmp
 ## Exp202 software (device tree)
@@ -17,10 +20,13 @@ cd /tmp
 # opkg install exp202_6.0_sepp.ipk
 ## EXP223 firmware
 echo "Reapplying device-tree"
-dd if=/dev/mmcblk0 bs=512 skip=14745600 count=16384 | gnu_tar.tar xv -C /tmp
-opkg install exp223-firmware_1.3_sepp.ipk
-
-cd /home/exp5223/
-./start_exp5223.sh
+if [[ $firmware == "0x00000223" ]]; then
+    dd if=/dev/mmcblk0 bs=512 skip=14745600 count=16384 | gnu_tar.tar xv -C /tmp
+    opkg install exp223-firmware_1.3_sepp.ipk
+    cd /home/exp5223/
+    ./start_exp5223.sh
+fi
 ## If firmware is not loaded, it will reboot here, better check before.
-set -x
+set +x
+
+exit 0

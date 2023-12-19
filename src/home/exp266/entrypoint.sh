@@ -41,7 +41,7 @@ sleep 3
 
 # Store the recording
 echo "Storing the recording to eMMC"
-./store_to_emmc.sh $sdr_recording_name
+./helper/store_to_emmc.sh $sdr_recording_name
 
 # Process the recording
 echo "Generate the waterfall"
