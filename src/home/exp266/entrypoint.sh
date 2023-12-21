@@ -15,8 +15,6 @@ id=exp266
 # Reconfigure the experiment
 mkdir -p output
 
-set -ex
-
 config="config.ini"
 carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {print $2}' $config)
 samp_freq_index=$(awk -F "=" '/samp_freq_index/ {print $2}' $config)
@@ -38,6 +36,8 @@ binary_path = $HOME_DIR/bin/process_samples
 output_path = output/sidlock_$id_"
 
 echo "$CONFIG" > running_config.ini
+
+set -ex
 
 echo "Setting up firmware."
 ./firmware_setup.sh
