@@ -12,7 +12,7 @@ if [[ $firmware == "0x00000223" ]] || [[ $firmware == "0x00000202" ]]; then
     echo "Correct firmware loaded (202/223)"
 else
     echo "FPGA Firmware not loaded - loading will cause reboot; Stopping."
-    exit -1
+    exit 11
 fi
 cd /tmp
 ## Exp202 software (device tree)

@@ -1,2 +1,4 @@
 delivery/
 *.tar
+output/
+*config.ini
