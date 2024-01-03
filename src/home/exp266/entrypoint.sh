@@ -46,7 +46,7 @@ echo "Setting up firmware."
 # Capture recording
 echo "Starting Recording"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
-./bin/sdr_sidlock_start running_config.ini > $output_path
+./bin/sdr_sidlock_start running_config.ini > $output_path/test_
 #export LD_PRELOAD=""
 
 
