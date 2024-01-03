@@ -10,7 +10,7 @@ lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.
 HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
-binary=sdr_to_stdout
+binary=sidlock_compiled
 mkdir -p output
 
 # Read the config
@@ -34,7 +34,7 @@ gain_db = $gain_db
 number_of_samples = $number_of_samples
 calibrate_frontend = $calibrate_frontend
 binary_path = $HOME_DIR/bin/$binary
-output_path = $output_path"
+output_path = $output_path/${id}_${binary}_"
 
 echo "$CONFIG" > running_config.ini
 
@@ -46,7 +46,7 @@ echo "Setting up firmware."
 # Capture recording
 echo "Starting Recording"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
-./bin/sdr_sidlock_start running_config.ini > $output_path/test_
+./bin/sdr_sidlock_start running_config.ini
 #export LD_PRELOAD=""
 
 
