@@ -32,7 +32,7 @@ lpf_bw_cfg = $lpf_bw_cfg
 gain_db = $gain_db
 number_of_samples = $number_of_samples
 calibrate_frontend = $calibrate_frontend
-binary_path = $HOME_DIR/bin/process_samples
+binary_path = $HOME_DIR/bin/sdr_to_emmc
 output_path = $output_path"
 
 echo "$CONFIG" > running_config.ini
@@ -61,7 +61,7 @@ echo "Recording finished! result: $sdr_recording_name"
 # Process the recording
 echo "Generate the waterfall"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
-./renderfall.sh output/sidlock_* sdr_$id
+./renderfall.sh $output_path sdr_$id
 renderfall_name=$(ls -rt toGround/ | tail -n1)
 
 # Cleanup
