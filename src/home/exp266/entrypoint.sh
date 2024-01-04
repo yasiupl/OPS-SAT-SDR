@@ -50,40 +50,52 @@ binary_path = $HOME_DIR/bin/$binary
 output_path = $output_path/${id}_${binary}_"
 
 echo "$CONFIG" > running_config.ini
-
 #set -ex
-
-echo "Set up firmware."
+## Setup FPGA firmware - devicetree
+echo "Setup FPGA firmware - devicetree"
 ./helper/firmware_setup.sh
 
-# Capture recording
+## Start recording
 echo "Start Recording"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
-./bin/sdr_sidlock_start running_config.ini
-#export LD_PRELOAD=""
-
-
-sdr_recording_name=$(ls -rt $output_path | tail -n1)
-echo "Recording finished! Filename: $sdr_recording_name"
-
+./bin/sdr_sidlock_launcher running_config.ini
 mv running_config.ini $output_path/
-
-# Store the recording
-echo "Storing the recording to eMMC"
-./helper/store_to_emmc_tar.sh $output_path
-
-# Process the recording
-echo "Generate the waterfall"
-export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
-waterfall_fft_size=$(awk -F "=" '/waterfall_fft_size/ {print $2}' $config)
-waterfall_window=$(awk -F "=" '/waterfall_window/ {print $2}' $config)
-bin/renderfall $output_path/$sdr_recording_name --format int16 --fftsize $waterfall_fft_size --window $waterfall_window --outfile $output_path/sdr_waterfall_FFT-${waterfall_fft_size}_WINDOW-${waterfall_window}.png --verbose
-renderfall_name=$(ls -rt $output_path/ | tail -n1)
-
-# Cleanup
-echo "Finished, cleaning up"
 #export LD_PRELOAD=""
-rm $output_path/$sdr_recording_name
 
+# Rename the output to .cs16 format
+sdr_recording_name=$(ls -rt $output_path | tail -n1)
+mv $output_path/$sdr_recording_name $output_path/${sdr_recording_name}.cs16
+sdr_recording_name=${sdr_recording_name}.cs16
+echo "Recording finished! File: $output_path/$sdr_recording_name"
 
-set +ex
+## Store the recording to eMMC
+store_recording_to_emmc=$(awk -F "=" '/store_recording_to_emmc/ {print $2}' $config)
+if [[ $store_recording_to_emmc == true ]]; then
+  echo "Store the recording to eMMC"
+  ./helper/store_to_emmc_tar.sh $output_path
+fi
+
+## Process the recording
+waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
+if [[ $waterfall_render == true ]]; then
+  echo "Generate the waterfall"
+  ./renderfall.sh $output_path/$sdr_recording_name $output_path
+  renderfall_name=$(ls -rt $output_path/ | tail -n1)
+  echo "Waterfall is not stored in eMMC. Generate it again after restoring using $PWD/renderfall.sh INPUT_FILE OUTPUT_PATH"
+fi
+
+## Zip for downlink
+zip_and_downlink=$(awk -F "=" '/zip_and_downlink/ {print $2}' $config)
+if [[ $zip_and_downlink == true ]]; then
+  tar czvf /esoc-apps-flash/fms/filestore/toGround/exp266_sdr_results_$(date +"%Y%m%d_%H%M%S").tar.gz $output_path
+fi
+
+## Cleanup
+echo "Cleaning up"
+export LD_PRELOAD=""
+keep_recording_in_filesystem=$(awk -F "=" '/keep_recording_in_filesystem/ {print $2}' $config)
+if [[ $keep_recording_in_filesystem == false ]]; then
+  rm $output_path/$sdr_recording_name
+fi
+
+#set +ex
