@@ -87,7 +87,11 @@ fi
 ## Zip for downlink
 zip_and_downlink=$(awk -F "=" '/zip_and_downlink/ {print $2}' $config)
 if [[ $zip_and_downlink == true ]]; then
-  tar czvf /esoc-apps-flash/fms/filestore/toGround/exp266_sdr_results_$(date +"%Y%m%d_%H%M%S").tar.gz $output_path
+  echo "Compressing and moving files to downling folder"
+  downlink_dir=/esoc-apps-flash/fms/filestore/toGround
+  tarname=exp266_sdr_results_$(date +"%Y%m%d_%H%M%S").tar.gz
+  tar czvf $downlink_dir/$tarname $output_path
+  ls -lah $downlink_dir
 fi
 
 ## Cleanup
@@ -95,6 +99,7 @@ echo "Cleaning up"
 export LD_PRELOAD=""
 keep_recording_in_filesystem=$(awk -F "=" '/keep_recording_in_filesystem/ {print $2}' $config)
 if [[ $keep_recording_in_filesystem == false ]]; then
+  echo "Deleting IQ sample file."
   rm $output_path/$sdr_recording_name
 fi
 
