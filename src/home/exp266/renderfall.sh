@@ -12,15 +12,15 @@ BINARY=bin/renderfall
 ## Available FFT Windows
 # WINDOWS=(hann gaussian square blackmanharris hamming kaiser parzen)
 # WINDOWS=(blackmanharris hamming)
-#WINDOW=blackmanharris
-WINDOW=$(awk -F "=" '/waterfall_window/ {print $2}' config.ini)
+WINDOW=blackmanharris
+#WINDOW=$(awk -F "=" '/waterfall_window/ {print $2}' config.ini)
 
 # SIZE=1024
 # SIZE=2048
 # SIZE=4096
-# SIZE=8192
+SIZE=8192
 # SIZE=16384
-SIZE=$(awk -F "=" '/waterfall_fft_size/ {print $2}' config.ini)
+#SIZE=$(awk -F "=" '/waterfall_fft_size/ {print $2}' config.ini)
 
 DATE=$(date +"%Y-%m-%dT%H-%M-%S")
 

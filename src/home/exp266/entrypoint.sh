@@ -11,7 +11,7 @@ HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
 binary=process_samples
-mkdir -p output
+output_path = $(ls -rt toGround/ | tail -n1)
 
 # Read the config
 config="config.ini"
@@ -21,7 +21,6 @@ lpf_bw_cfg=$(awk -F "=" '/lpf_bw_cfg/ {print $2}' $config)
 gain_db=$(awk -F "=" '/gain_db/ {print $2}' $config)
 number_of_samples=$(awk -F "=" '/number_of_samples/ {print $2}' $config)
 calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
-output_path=$(awk -F "=" '/output_path/ {print $2}' $config)
 
 MOTD="
    ___  ___  ___     ___   _ _____   ___ ___  ___ 
@@ -63,25 +62,26 @@ echo "Start Recording"
 #export LD_PRELOAD=""
 
 
-sdr_recording_name=$(ls -rt output/ | tail -n1)
-echo "Recording finished! result: $sdr_recording_name"
+sdr_recording_name=$(ls -rt $output_path | tail -n1)
+echo "Recording finished! Filename: $sdr_recording_name"
 
 #sleep 3
 
 # Store the recording
 echo "Storing the recording to eMMC"
-./helper/store_to_emmc.sh $sdr_recording_name
+./helper/store_to_emmc_tar.sh $sdr_recording_name
 
 # Process the recording
 echo "Generate the waterfall"
-#export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
-./renderfall.sh $output_path/$sdr_recording_name sdr_$id
-renderfall_name=$(ls -rt toGround/ | tail -n1)
+export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
+waterfall_fft_size=$(awk -F "=" '/waterfall_fft_size/ {print $2}' $config)
+waterfall_window=$(awk -F "=" '/waterfall_window/ {print $2}' $config)
+bin/renderfall $output_path/$sdr_recording_name --format int16 --fftsize $waterfall_fft_size --window $waterfall_window --outfile $output_path/sdr_waterfall_FFT-${waterfall_fft_size}_WINDOW-${waterfall_window}.png
+renderfall_name=$(ls -rt $output_path/ | tail -n1)
 
 # Cleanup
 echo "Finished, cleaning up"
 #export LD_PRELOAD=""
-rm -r output/*
-mv running_config.ini toGround/$renderfall_name
+mv running_config.ini $output_path/
 
 set +ex
