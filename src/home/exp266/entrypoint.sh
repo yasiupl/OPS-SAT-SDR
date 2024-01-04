@@ -70,14 +70,14 @@ echo "Recording finished! Filename: $sdr_recording_name"
 
 # Store the recording
 echo "Storing the recording to eMMC"
-./helper/store_to_emmc_tar.sh $sdr_recording_name
+./helper/store_to_emmc_tar.sh $output_path/$sdr_recording_name
 
 # Process the recording
 echo "Generate the waterfall"
 export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3"
 waterfall_fft_size=$(awk -F "=" '/waterfall_fft_size/ {print $2}' $config)
 waterfall_window=$(awk -F "=" '/waterfall_window/ {print $2}' $config)
-bin/renderfall $output_path/$sdr_recording_name --format int16 --fftsize $waterfall_fft_size --window $waterfall_window --outfile $output_path/sdr_waterfall_FFT-${waterfall_fft_size}_WINDOW-${waterfall_window}.png
+bin/renderfall $output_path/$sdr_recording_name --format int16 --fftsize $waterfall_fft_size --window $waterfall_window --outfile $output_path/sdr_waterfall_FFT-${waterfall_fft_size}_WINDOW-${waterfall_window}.png --verbose
 renderfall_name=$(ls -rt $output_path/ | tail -n1)
 
 # Cleanup
