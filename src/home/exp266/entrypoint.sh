@@ -66,11 +66,11 @@ echo "Start Recording"
 sdr_recording_name=$(ls -rt $output_path | tail -n1)
 echo "Recording finished! Filename: $sdr_recording_name"
 
-#sleep 3
+mv running_config.ini $output_path/
 
 # Store the recording
 echo "Storing the recording to eMMC"
-./helper/store_to_emmc_tar.sh $output_path/$sdr_recording_name
+./helper/store_to_emmc_tar.sh $output_path/*
 
 # Process the recording
 echo "Generate the waterfall"
@@ -83,6 +83,6 @@ renderfall_name=$(ls -rt $output_path/ | tail -n1)
 # Cleanup
 echo "Finished, cleaning up"
 #export LD_PRELOAD=""
-mv running_config.ini $output_path/
+
 
 set +ex

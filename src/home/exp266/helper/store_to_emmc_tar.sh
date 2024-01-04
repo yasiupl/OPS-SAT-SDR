@@ -43,6 +43,7 @@ copy_and_verify() {
         su - -c "cd $(dirname $source_file); /usr/sbin/gnu_tar.tar cvf /dev/mmcblk0p$destination_partition $(basename $source_file)"
         echo 3 > /proc/sys/vm/drop_caches
         # list files in stored tar
+        echo "Stored to partition:"
         dd if=/dev/mmcblk0 bs=$bs skip=$start_add_512 count=$lenght_512 | gnu_tar.tar tv
     # else
     #     echo "MD5 checksum does not match. Skipping the storing and verification."
