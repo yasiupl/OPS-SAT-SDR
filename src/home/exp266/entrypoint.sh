@@ -11,7 +11,7 @@ HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
 binary=process_samples
-output_path = $(ls -rt toGround/ | tail -n1)
+output_path=$(ls -rt toGround/ | tail -n1)
 
 # Read the config
 config="config.ini"
@@ -23,17 +23,18 @@ number_of_samples=$(awk -F "=" '/number_of_samples/ {print $2}' $config)
 calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
 
 MOTD="
-   ___  ___  ___     ___   _ _____   ___ ___  ___ 
-  / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \
- | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /
-  \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\
+   ___  ___  ___     ___   _ _____   ___ ___  ___   
+  / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \  
+ | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /  
+  \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\  
 
     Authors: OPS-SAT MCT, Libre Space Foundation
 
   Center frequency: $carrier_frequency_GHz GHz;
   Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index);
   Low Pass filter:  $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz (id: $lpf_bw_cfg);
-  Gain:             $gain_db dB;      
+  Gain:             $gain_db dB;
+  Output path:      $output_path
 "
 echo "$MOTD"
 
