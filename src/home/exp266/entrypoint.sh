@@ -58,10 +58,10 @@ echo "Setup FPGA firmware - devicetree."
 
 ## Start recording
 echo "Start Recording."
-export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
+#export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 ./bin/sdr_sidlock_launcher running_config.ini
 mv running_config.ini $output_path/
-export LD_PRELOAD=""
+#export LD_PRELOAD=""
 
 # WORKAROUND Rename the output to .cs16 format
 sdr_recording_name=$(ls -rt $output_path | grep ${id}_${binary}_)
@@ -75,7 +75,6 @@ if [[ $waterfall_render == true ]]; then
   echo "Generate the waterfall."
   ./renderfall.sh $output_path/$sdr_recording_name $output_path
   renderfall_name=$(ls -rt $output_path/ | tail -n1)
-  echo "Waterfall is not stored in eMMC. Generate it again after restoring using $PWD/renderfall.sh INPUT_FILE OUTPUT_PATH"
 fi
 
 ## Store the recording to eMMC
@@ -93,7 +92,7 @@ downlink=$(awk -F "=" '/downlink/ {print $2}' $config)
 if [[ $downlink == true ]]; then
   echo "Restore tar from eMMC and put for downlink."
   ./helper/downlink_from_emmc.sh exp266_sdr_${output_folder}
-elif
+else
   echo "To restore the recording from eMMC run $PWD/helper/downlink_from_emmc.sh"
 fi
 
