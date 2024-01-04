@@ -11,7 +11,7 @@ HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
 binary=process_samples
-output_path=$(ls -rt toGround/ | tail -n1)
+output_path=$PWD/toGround/$(ls -rt toGround/ | tail -n1)
 
 # Read the config
 config="config.ini"
