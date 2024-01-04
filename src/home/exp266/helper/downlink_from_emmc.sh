@@ -3,7 +3,7 @@ set -x
 
 restored_date=$(date +"%Y%m%d_%H%M%S")
 output_path=/esoc-apps-flash/fms/filestore/toGround
-name=sdr_recording_restored_${restored_date}
+name=${1:-sdr_recording_restored_${restored_date}}
 
 mkdir -p $output_path
 

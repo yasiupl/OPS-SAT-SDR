@@ -11,7 +11,8 @@ HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
 binary=process_samples
-output_path=$PWD/toGround/$(ls -rt toGround/ | tail -n1)
+output_folder=$(ls -rt toGround/ | tail -n1)
+output_path=$PWD/toGround/$output_folder
 
 # Read the config
 config="config.ini"
@@ -52,15 +53,15 @@ output_path = $output_path/${id}_${binary}_"
 echo "$CONFIG" > running_config.ini
 #set -ex
 ## Setup FPGA firmware - devicetree
-echo "Setup FPGA firmware - devicetree"
+echo "Setup FPGA firmware - devicetree."
 ./helper/firmware_setup.sh
 
 ## Start recording
-echo "Start Recording"
-#export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
+echo "Start Recording."
+export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 ./bin/sdr_sidlock_launcher running_config.ini
 mv running_config.ini $output_path/
-#export LD_PRELOAD=""
+export LD_PRELOAD=""
 
 # WORKAROUND Rename the output to .cs16 format
 sdr_recording_name=$(ls -rt $output_path | grep ${id}_${binary}_)
@@ -68,39 +69,36 @@ mv $output_path/$sdr_recording_name $output_path/${sdr_recording_name}.cs16
 sdr_recording_name=${sdr_recording_name}.cs16
 echo "Recording finished! File: $output_path/$sdr_recording_name"
 
-## Store the recording to eMMC
-store_recording_to_emmc=$(awk -F "=" '/store_recording_to_emmc/ {print $2}' $config)
-if [[ $store_recording_to_emmc == true ]]; then
-  echo "Store the recording to eMMC"
-  ./helper/store_to_emmc_tar.sh $output_path
-fi
-
 ## Process the recording
 waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
 if [[ $waterfall_render == true ]]; then
-  echo "Generate the waterfall"
+  echo "Generate the waterfall."
   ./renderfall.sh $output_path/$sdr_recording_name $output_path
   renderfall_name=$(ls -rt $output_path/ | tail -n1)
   echo "Waterfall is not stored in eMMC. Generate it again after restoring using $PWD/renderfall.sh INPUT_FILE OUTPUT_PATH"
 fi
 
-## Zip for downlink
-zip_and_downlink=$(awk -F "=" '/zip_and_downlink/ {print $2}' $config)
-if [[ $zip_and_downlink == true ]]; then
-  echo "Compressing and moving files to downling folder"
-  downlink_dir=/esoc-apps-flash/fms/filestore/toGround
-  tarname=exp266_sdr_results_$(date +"%Y%m%d_%H%M%S").tar.gz
-  tar czvf $downlink_dir/$tarname $output_path
-  ls -lah $downlink_dir
+## Store the recording to eMMC
+echo "Store everything to eMMC."
+./helper/store_to_emmc_tar.sh $output_path
+
+keep_in_filesystem=$(awk -F "=" '/keep_in_filesystem/ {print $2}' $config)
+if [[ $keep_in_filesystem == false ]]; then
+  echo "Delete everything from filesystem."
+  rm -r $output_path
+fi
+
+## Downlink
+downlink=$(awk -F "=" '/downlink/ {print $2}' $config)
+if [[ $downlink == true ]]; then
+  echo "Restore tar from eMMC and put for downlink."
+  ./helper/downlink_from_emmc.sh exp266_sdr_${output_folder}
+elif
+  echo "To restore the recording from eMMC run $PWD/helper/downlink_from_emmc.sh"
 fi
 
 ## Cleanup
 echo "Cleaning up"
 export LD_PRELOAD=""
-keep_recording_in_filesystem=$(awk -F "=" '/keep_recording_in_filesystem/ {print $2}' $config)
-if [[ $keep_recording_in_filesystem == false ]]; then
-  echo "Deleting IQ sample file."
-  rm $output_path/$sdr_recording_name
-fi
 
 #set +ex
