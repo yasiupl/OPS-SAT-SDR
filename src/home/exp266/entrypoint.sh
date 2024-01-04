@@ -59,11 +59,11 @@ echo "Setup FPGA firmware - devicetree"
 echo "Start Recording"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 ./bin/sdr_sidlock_launcher running_config.ini
+sdr_recording_name=$(ls -rt $output_path | tail -n1)
 mv running_config.ini $output_path/
 #export LD_PRELOAD=""
 
 # Rename the output to .cs16 format
-sdr_recording_name=$(ls -rt $output_path | tail -n1)
 mv $output_path/$sdr_recording_name $output_path/${sdr_recording_name}.cs16
 sdr_recording_name=${sdr_recording_name}.cs16
 echo "Recording finished! File: $output_path/$sdr_recording_name"
