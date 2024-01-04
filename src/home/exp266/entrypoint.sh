@@ -10,7 +10,7 @@ lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.
 HOME_DIR=$PWD
 #id=$RANDOM
 id=exp266
-binary=sidlock_compiled
+binary=process_samples
 mkdir -p output
 
 # Read the config
@@ -23,9 +23,22 @@ number_of_samples=$(awk -F "=" '/number_of_samples/ {print $2}' $config)
 calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
 output_path=$(awk -F "=" '/output_path/ {print $2}' $config)
 
-echo "Recording at center frequency $carrier_frequency_GHz GHz; Sampling Rate: $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz; Low Pass filter: $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz;"
+MOTD="
+   ___  ___  ___     ___   _ _____   ___ ___  ___ 
+  / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \
+ | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /
+  \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\
 
-# Generate config for exp202
+    Authors: OPS-SAT MCT, Libre Space Foundation
+
+  Record at center frequency $carrier_frequency_GHz GHz;
+  Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index_lookup);
+  Low Pass filter:  $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz (id: $lpf_bw_cfg_lookup);
+  Gain:             $gain_db dB;      
+"
+echo "$MOTD"
+
+# Generate running config for exp202
 CONFIG="[SEPP_SDR_RX]
 carrier_frequency_GHz = $carrier_frequency_GHz
 samp_freq_index = $samp_freq_index
@@ -40,11 +53,11 @@ echo "$CONFIG" > running_config.ini
 
 #set -ex
 
-echo "Setting up firmware."
+echo "Set up firmware."
 ./helper/firmware_setup.sh
 
 # Capture recording
-echo "Starting Recording"
+echo "Start Recording"
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 ./bin/sdr_sidlock_start running_config.ini
 #export LD_PRELOAD=""
