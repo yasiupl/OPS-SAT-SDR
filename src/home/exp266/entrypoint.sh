@@ -31,9 +31,9 @@ MOTD="
 
     Authors: OPS-SAT MCT, Libre Space Foundation
 
-  Record at center frequency $carrier_frequency_GHz GHz;
-  Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index_lookup);
-  Low Pass filter:  $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz (id: $lpf_bw_cfg_lookup);
+  Center frequency: $carrier_frequency_GHz GHz;
+  Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index);
+  Low Pass filter:  $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz (id: $lpf_bw_cfg);
   Gain:             $gain_db dB;      
 "
 echo "$MOTD"
@@ -69,8 +69,8 @@ echo "Recording finished! result: $sdr_recording_name"
 #sleep 3
 
 # Store the recording
-#echo "Storing the recording to eMMC"
-#./helper/store_to_emmc.sh $sdr_recording_name
+echo "Storing the recording to eMMC"
+./helper/store_to_emmc.sh $sdr_recording_name
 
 # Process the recording
 echo "Generate the waterfall"
