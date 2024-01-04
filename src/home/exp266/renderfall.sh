@@ -29,13 +29,13 @@ if [ -z $IN_FILE ]; then
     exit 2
 fi
 
-if [ -z $OUT_FILE ]; then
-    OUT_FOLDER=toGround/${OUT_FILE}_${DATE}
+if [ -z $OUT_FOLDER ]; then
+    OUT_FOLDER=toGround/renderfall_${DATE}
     mkdir -p $OUT_FOLDER
-    echo "No output file name given. Defaulting to \"$OUT_FILE\"."
+    echo "No output folder given. Defaulting to \"$OUT_FOLDER\"."
 fi
 
-FILENAME=${OUT_FILE}_${WINDOW}_${SIZE}
+FILENAME=renderfall_${WINDOW}_${SIZE}
 echo $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUT_FOLDER/$FILENAME.png"
 echo $BINARY $ARGUMENTS
