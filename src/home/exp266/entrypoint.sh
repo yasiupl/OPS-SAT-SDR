@@ -70,7 +70,7 @@ mv running_config.ini $output_path/
 
 # Store the recording
 echo "Storing the recording to eMMC"
-./helper/store_to_emmc_tar.sh $output_path/*
+./helper/store_to_emmc_tar.sh $output_path
 
 # Process the recording
 echo "Generate the waterfall"
