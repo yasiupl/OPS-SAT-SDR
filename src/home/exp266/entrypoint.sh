@@ -83,6 +83,7 @@ renderfall_name=$(ls -rt $output_path/ | tail -n1)
 # Cleanup
 echo "Finished, cleaning up"
 #export LD_PRELOAD=""
+rm $output_path/$sdr_recording_name
 
 
 set +ex
