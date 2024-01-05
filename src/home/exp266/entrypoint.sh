@@ -29,7 +29,9 @@ MOTD="
  | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /  
   \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\  
 
-    Authors: OPS-SAT MCT, Libre Space Foundation
+                      Authors: 
+    TU-Graz, OPS-SAT MCT, Libre Space Foundation
+                       et al. 
 
   Center frequency: $carrier_frequency_GHz GHz;
   Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index);
