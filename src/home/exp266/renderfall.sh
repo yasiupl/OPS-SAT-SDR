@@ -44,7 +44,12 @@ echo $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS
 export LD_PRELOAD=lib/libfftw3.so.3
 echo "### Generating waterfall"
 $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS --verbose
-echo "### Converting to JPG"
-export LD_PRELOAD=lib/libnetpbm.so.10
-$BINARY_PATH/pngtopnm -quiet $OUT_FOLDER/$FILENAME.png | $BINARY_PATH/ppmtojpeg -quiet > $OUT_FOLDER/$FILENAME.jpg
+
+waterfall_convert_to_jpg=$(awk -F "=" '/waterfall_convert_to_jpg/ {print $2}' config.ini)
+if [[ $waterfall_convert_to_jpg == true ]]; then
+    echo "### Converting to JPG"
+    export LD_PRELOAD=lib/libnetpbm.so.10
+    $BINARY_PATH/pngtopnm -quiet $OUT_FOLDER/$FILENAME.png | $BINARY_PATH/ppmtojpeg -quiet > $OUT_FOLDER/$FILENAME.jpg
+    rm $OUT_FOLDER/$FILENAME.png
+fi
 export LD_PRELOAD=""
