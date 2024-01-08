@@ -129,8 +129,6 @@ if [[ $downlink_all == true ]] && [[ $store_to_emmc == false ]]; then
       rm -r $OUTPUT_PATH
     fi  
 fi
-  
-fi
 
 
 ## Cleanup

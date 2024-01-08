@@ -4,7 +4,7 @@ NUM_PROCESSES=$(ps aux | tr -s " " | cut -d' ' -f5 | grep -i "$exp_id" | grep -v
 timestamp_trigger=$(date +"%Y%m%d_%H%M%S")
 logfile=$exp_id_$timestamp_trigger.log
 HOME_DIR=$PWD
-EXECUTION_DIR=$HOME_DIR/toGround/$timestamp_trigger/
+EXECUTION_DIR=$HOME_DIR/toGround/$timestamp_trigger
 
 mkdir -p $EXECUTION_DIR
 
