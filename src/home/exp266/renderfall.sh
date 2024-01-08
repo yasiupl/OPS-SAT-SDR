@@ -38,9 +38,13 @@ if [ -z $OUT_FOLDER ]; then
 fi
 
 FILENAME=renderfall_${WINDOW}_${SIZE}
-echo $FILENAME
+echo Filename: $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUT_FOLDER/$FILENAME.png"
 echo $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS
 export LD_PRELOAD=lib/libfftw3.so.3
-$BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS --verbose && $BINARY_PATH/pngtopnm -quiet $OUT_FOLDER/$FILENAME.png | $BINARY_PATH/ppmtojpeg -quiet > $OUT_FOLDER/$FILENAME.jpg
+echo "### Generating waterfall"
+$BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS --verbose
+echo "### Converting to JPG"
+export LD_PRELOAD=lib/libnetpbm.so.10
+$BINARY_PATH/pngtopnm -quiet $OUT_FOLDER/$FILENAME.png | $BINARY_PATH/ppmtojpeg -quiet > $OUT_FOLDER/$FILENAME.jpg
 export LD_PRELOAD=""
