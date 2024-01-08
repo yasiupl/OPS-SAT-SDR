@@ -2,6 +2,7 @@
 
 EXP_PATH=/home/exp266
 BINARY_PATH=$EXP_PATH/bin
+LIB_PATH=$EXP_PATH/lib
 CONFIG_FILE=$EXP_PATH/config.ini
 
 IN_FILE=$1
@@ -43,14 +44,14 @@ FILENAME=renderfall_${WINDOW}_${SIZE}
 echo Filename: $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUT_FOLDER/$FILENAME.png"
 echo $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS
-export LD_PRELOAD=lib/libfftw3.so.3
+export LD_PRELOAD=$LIB_PATHf/libfftw3.so.3
 echo "### Generating waterfall"
 $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS --verbose
 
 waterfall_convert_to_jpg=$(awk -F "=" '/waterfall_convert_to_jpg/ {print $2}' config.ini)
 if [[ $waterfall_convert_to_jpg == true ]]; then
     echo "### Converting to JPG"
-    export LD_PRELOAD=lib/libnetpbm.so.10
+    export LD_PRELOAD=$LIB_PATH/libnetpbm.so.10
     $BINARY_PATH/pngtopnm -quiet $OUT_FOLDER/$FILENAME.png | $BINARY_PATH/ppmtojpeg -quiet > $OUT_FOLDER/$FILENAME.jpg
     rm $OUT_FOLDER/$FILENAME.png
 fi
