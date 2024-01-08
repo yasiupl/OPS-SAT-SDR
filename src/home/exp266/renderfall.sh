@@ -44,7 +44,7 @@ FILENAME=renderfall_${WINDOW}_${SIZE}
 echo Filename: $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUT_FOLDER/$FILENAME.png"
 echo $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS
-export LD_PRELOAD=$LIB_PATHf/libfftw3.so.3
+export LD_PRELOAD=$LIB_PATH/libfftw3.so.3
 echo "### Generating waterfall"
 $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS --verbose
 
