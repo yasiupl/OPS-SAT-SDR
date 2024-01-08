@@ -1,6 +1,8 @@
 #/bin/env sh
 
-BINARY_PATH=./bin
+EXP_PATH=/home/exp266
+BINARY_PATH=$EXP_PATH/bin
+CONFIG_FILE=$EXP_PATH/config.ini
 
 IN_FILE=$1
 OUT_FOLDER=$2
@@ -15,14 +17,14 @@ RENDERFALL_BINARY=renderfall
 # WINDOWS=(hann gaussian square blackmanharris hamming kaiser parzen)
 # WINDOWS=(blackmanharris hamming)
 #WINDOW=blackmanharris
-WINDOW=$(awk -F "=" '/waterfall_window/ {print $2}' config.ini)
+WINDOW=$(awk -F "=" '/waterfall_window/ {print $2}' $CONFIG_FILE)
 
 # SIZE=1024
 # SIZE=2048
 # SIZE=4096
 # SIZE=8192
 # SIZE=16384
-SIZE=$(awk -F "=" '/waterfall_fft_size/ {print $2}' config.ini)
+SIZE=$(awk -F "=" '/waterfall_fft_size/ {print $2}' $CONFIG_FILE)
 
 DATE=$(date +"%Y-%m-%dT%H-%M-%S")
 

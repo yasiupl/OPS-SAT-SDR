@@ -1,1 +1,3 @@
-rsync --archive --verbose --human-readable --delete src/home/exp266/* em-ops:/home/exp266/
+#!/bin/sh
+
+ssh osdrs "cd chroot/experiments/exp266/fromESOC; scp `realpath latest` em:~"
