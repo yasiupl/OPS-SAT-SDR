@@ -40,6 +40,7 @@ copy_and_verify() {
     local source_file=$1
     local destination_partition=$2
     # if [ "$predef_md5sum" == "$(md5sum $source_file | cut -d ' ' -f 1)" ]; then
+        echo "Storing files:"
         su - -c "cd $(dirname $source_file); /usr/sbin/gnu_tar.tar cvf /dev/mmcblk0p$destination_partition $(basename $source_file)"
         echo 3 > /proc/sys/vm/drop_caches
         # list files in stored tar

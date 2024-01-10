@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
+
+## The script will restore the recording from eMMC and compress it for downlink, without creating intermediary files. It takes a lot of time to compress, so run it in background (start with & at the end).
+
 set -x
 
 restored_date=$(date +"%Y%m%d_%H%M%S")
