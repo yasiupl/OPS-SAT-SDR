@@ -90,7 +90,7 @@ if [[ $waterfall_render == true ]]; then
   renderfall_name=$(ls -rt $OUTPUT_PATH/ | tail -n1)
 
   if [[ $waterfall_downlink == true ]]; then
-    cp $OUTPUT_PATH/$renderfall_name $DOWNLINK_PATH
+    tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}_waterfall.tar.gz $OUTPUT_PATH/$renderfall_name
   fi
 fi
 
