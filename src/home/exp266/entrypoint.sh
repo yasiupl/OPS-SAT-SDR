@@ -97,7 +97,7 @@ fi
 ## Storage and DOWNLINK
 downlink_all=$(awk -F "=" '/downlink_all/ {print $2}' $config)
 store_to_emmc=$(awk -F "=" '/store_to_emmc/ {print $2}' $config)
-keep_in_filesystem=$(awk -F "=" '/keep_in_filesystem/ {print $2}' $config)
+keep_recording_in_filesystem=$(awk -F "=" '/keep_recording_in_filesystem/ {print $2}' $config)
 
 if [[ $store_to_emmc == true ]]; then
   echo "#### Store latest recording to eMMC. It will override the last recording!"
@@ -110,9 +110,9 @@ fi
 ## Downlink from eMMC
 if [[ $downlink_all == true ]] && [[ $store_to_emmc == true ]]; then
 
-    if [[ $keep_in_filesystem == false ]]; then
+    if [[ $keep_recording_in_filesystem == false ]]; then
       echo "#### Make space by deleting results from filesystem."
-      rm -r $OUTPUT_PATH
+      rm $OUTPUT_PATH/$sdr_recording_name
     fi  
 
     echo "#### Restore tar from eMMC and put for downlink."
@@ -124,7 +124,7 @@ if [[ $downlink_all == true ]] && [[ $store_to_emmc == false ]]; then
     echo "#### Compress and move to downlink folder. WARNING: Will cause double memory usage! SEPP might crash."
     tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}.tar.gz $OUTPUT_PATH
 
-    if [[ $keep_in_filesystem == false ]]; then
+    if [[ $keep_recording_in_filesystem == false ]]; then
       echo "#### Delete results from filesystem."
       rm -r $OUTPUT_PATH
     fi  
@@ -134,9 +134,9 @@ fi
 ## Cleanup
 echo "#### Cleaning up"
 export LD_PRELOAD=""
-if [[ $keep_in_filesystem == false ]]; then
-  echo "#### Delete everything from filesystem."
-  rm -r $OUTPUT_PATH
+if [[ $keep_recording_in_filesystem == false ]]; then
+  echo "#### Delete recording from filesystem."
+  rm $OUTPUT_PATH/$sdr_recording_name
 fi  
 
 #set +ex
