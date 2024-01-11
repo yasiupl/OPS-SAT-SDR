@@ -11,7 +11,7 @@ echo "Loaded firmware: $firmware"
 
 if [[ $firmware == "0x00000223" ]] || [[ $firmware == "0x00000202" ]]; then
     echo "Correct firmware loaded (202/223)"
-elif [[ $force_reload != "force_reload" ]]; then
+else
     echo "FPGA Firmware not loaded - loading will cause reboot; Stopping."
     exit 11
 fi
