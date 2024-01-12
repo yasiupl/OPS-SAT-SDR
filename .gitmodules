@@ -4,3 +4,6 @@
 [submodule "dependencies/sepp-software"]
 	path = dependencies/sepp-software
 	url = git@gitlab.esa.int:OPS-SAT/sepp/sepp-software.git
+[submodule "dependencies/ops-sat-sidloc-sw"]
+	path = dependencies/ops-sat-sidloc-sw
+	url = https://gitlab.com/librespacefoundation/ops-sat-sidloc/ops-sat-sidloc-sw/
