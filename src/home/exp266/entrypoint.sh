@@ -14,6 +14,7 @@ DOWNLINK_PATH=/esoc-apps-flash/fms/filestore/toGround/
 config="config.ini"
 id=exp266
 binary=sidloc
+single_binary=exp202_compiled_20240116_1730
 sdr_sample_name_slug="${id}_${binary}_"
 
 samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
@@ -71,8 +72,8 @@ echo "#### Setup FPGA firmware - devicetree."
 ## Start recording
 echo "#### Start Recording."
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
-./bin/sdr_sidlock_launcher running_config.ini
-#./bin/exp202 running_config.ini
+#./bin/sdr_sidlock_launcher running_config.ini
+./bin/${single_binary} running_config.ini
 mv running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 
