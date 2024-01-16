@@ -7,3 +7,6 @@
 [submodule "dependencies/ops-sat-sidloc-sw"]
 	path = dependencies/ops-sat-sidloc-sw
 	url = https://gitlab.com/librespacefoundation/ops-sat-sidloc/ops-sat-sidloc-sw/
+[submodule "dependencies/csdr"]
+	path = dependencies/csdr
+	url = https://github.com/ha7ilm/csdr.git

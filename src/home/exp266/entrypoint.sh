@@ -72,6 +72,7 @@ echo "#### Setup FPGA firmware - devicetree."
 echo "#### Start Recording."
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 ./bin/sdr_sidlock_launcher running_config.ini
+#./bin/exp202 running_config.ini
 mv running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 
