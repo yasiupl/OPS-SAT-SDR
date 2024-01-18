@@ -1,20 +1,20 @@
 #!/usr/bin/env sh
 
 ## TODO
-# add script to tar to partition.
-# add script to un-tar results from partition.
 # modify the process_samples binary to store the data in partition directly OR print to STDOUT + divert to partition.
-
+# calculate the real size of the recording based on input number_of_samples
+# check available space and notify when it is not enough to store the samples
+# note the start and end date of the recording
 
 HOME_DIR=$PWD
 OUTPUT_SLUG=$(ls -rt $HOME_DIR/toGround/ | tail -n1)
 OUTPUT_PATH=${1:-"${HOME_DIR}/toGround/${OUTPUT_SLUG}"}
+RECORDING_PATH=/dev/mmcblk0p180
 DOWNLINK_PATH=/esoc-apps-flash/fms/filestore/toGround/
 
 config="config.ini"
 id=exp266
-binary=sidloc
-single_binary=exp202_compiled_20240116_1730
+binary=exp202_single_exec_to_file
 sdr_sample_name_slug="${id}_${binary}_"
 
 samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
@@ -45,8 +45,8 @@ MOTD="
   Gain:             $gain_db dB;
   Calibrate:        $calibrate_frontend
 
-  Output path:      $OUTPUT_PATH
-  Output filename:  $sdr_sample_name_slug
+  Recording path:   $RECORDING_PATH
+  Output path:      $OUTPUT_PATH/$OUTPUT_SLUG
 "
 echo "$MOTD"
 
@@ -58,8 +58,7 @@ lpf_bw_cfg = $lpf_bw_cfg
 gain_db = $gain_db
 number_of_samples = $number_of_samples
 calibrate_frontend = $calibrate_frontend
-binary_path = $HOME_DIR/bin/$binary
-output_path = $OUTPUT_PATH/$sdr_sample_name_slug"
+output_path = $RECORDING_PATH"
 
 echo "$CONFIG" > running_config.ini
 
@@ -78,60 +77,38 @@ mv running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 
 # WORKAROUND Rename the output to .cs16 format
-sdr_recording_name=$(ls -rt $OUTPUT_PATH | grep $sdr_sample_name_slug)
-mv $OUTPUT_PATH/$sdr_recording_name $OUTPUT_PATH/${sdr_recording_name}.cs16
-sdr_recording_name=${sdr_recording_name}.cs16
-echo "#### Recording finished! File: $OUTPUT_PATH/$sdr_recording_name"
+# sdr_recording_name=$(ls -rt $OUTPUT_PATH | grep $sdr_sample_name_slug)
+# mv $OUTPUT_PATH/$sdr_recording_name $OUTPUT_PATH/${sdr_recording_name}.cs16
+# sdr_recording_name=${sdr_recording_name}.cs16
+# echo "#### Recording finished! File: $OUTPUT_PATH/$sdr_recording_name"
+
+echo "#### Recording finished! File: $RECORDING_PATH"
+
 
 ## Process the recording
 waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
-waterfall_downlink=$(awk -F "=" '/waterfall_downlink/ {print $2}' $config)
 if [[ $waterfall_render == true ]]; then
   echo "#### Generate the waterfall."
-  ./renderfall.sh $OUTPUT_PATH/$sdr_recording_name $OUTPUT_PATH
+  ./renderfall.sh $RECORDING_PATH $OUTPUT_PATH
   renderfall_name=$(ls -rt $OUTPUT_PATH/ | tail -n1)
-
-  if [[ $waterfall_downlink == true ]]; then
-    tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}_waterfall.tar.gz $OUTPUT_PATH/$renderfall_name $OUTPUT_PATH/running_config.ini $OUTPUT_PATH/$OUTPUT_SLUG.log
-  fi
 fi
 
-## Storage and DOWNLINK
-downlink_all=$(awk -F "=" '/downlink_all/ {print $2}' $config)
-store_to_emmc=$(awk -F "=" '/store_to_emmc/ {print $2}' $config)
-keep_recording_in_filesystem=$(awk -F "=" '/keep_recording_in_filesystem/ {print $2}' $config)
-
-if [[ $store_to_emmc == true ]]; then
-  echo "#### Store latest recording to eMMC. It will override the last recording!"
-  ./helper/store_to_emmc_tar.sh $OUTPUT_PATH
-  echo "#### To restore the recording from eMMC later, run $HOME_DIR/helper/downlink_from_emmc.sh"
-else
-  echo "#### The recording has not been stored! Collect the results before the spacecraft reboots!"
-fi
+## Downlink
+downlink_samples=$(awk -F "=" '/downlink_samples/ {print $2}' $config)
 
 ## Downlink from eMMC
-if [[ $downlink_all == true ]] && [[ $store_to_emmc == true ]]; then
-
-    if [[ $keep_recording_in_filesystem == false ]]; then
-      echo "#### Make space by deleting results from filesystem."
-      rm $OUTPUT_PATH/$sdr_recording_name
-    fi  
-
-    echo "#### Restore tar from eMMC and put for downlink."
-    ./helper/downlink_from_emmc.sh exp266_sdr_${OUTPUT_SLUG}
+if [[ $downlink_samples == true ]]; then
+    echo "#### Restore samples from eMMC and put for downlink."
+    dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 of=$OUTPUT_PATH/sdr_carrier-${carrier_frequency_GHz}GHz_sampling-${samp_freq_index}_lpf-${lpf_bw_cfg}_$OUTPUT_SLUG.cs16
 fi
 
-## Downlink from filesystem - there will be duplicate memory allocation after packaging!
-if [[ $downlink_all == true ]] && [[ $store_to_emmc == false ]]; then
-    echo "#### Compress and move to downlink folder. WARNING: Will cause double memory usage! SEPP might crash."
-    tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}.tar.gz $OUTPUT_PATH
-
-    if [[ $keep_recording_in_filesystem == false ]]; then
-      echo "#### Delete results from filesystem."
-      rm -r $OUTPUT_PATH
-    fi  
+tar_downlink=$(awk -F "=" '/tar_downlink/ {print $2}' $config)
+if [[ $tar_downlink == true ]]; then
+  echo "#### Compress and move to downlink folder. Filename: exp266_sdr_${OUTPUT_SLUG}.tar.gz"
+  tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}.tar.gz $OUTPUT_PATH
+  echo "#### Downlink folder:"
+  ls -lhR $DOWNLINK_PATH
 fi
-
 
 ## Cleanup
 echo "#### Cleaning up"
