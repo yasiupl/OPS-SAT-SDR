@@ -12,7 +12,13 @@ echo "Loaded firmware: $firmware"
 if [[ $firmware == "0x00000223" ]] || [[ $firmware == "0x00000202" ]]; then
     echo "Correct firmware loaded (202/223)"
 else
-    echo "FPGA Firmware not loaded - loading will cause reboot; Stopping."
+    echo "FPGA Firmware not loaded - loading will cause reboot;"
+fi
+
+if [[ $force_reload == "force_reload" ]]; then
+    echo "Forcing install of FPGA firmware! SEPP will reboot soon!"
+else
+    echo "Refusing reboot. Stopping now."
     exit 11
 fi
 cd /tmp
