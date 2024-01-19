@@ -13,14 +13,16 @@ if [[ $firmware == "0x00000223" ]] || [[ $firmware == "0x00000202" ]]; then
     echo "Correct firmware loaded (202/223)"
 else
     echo "FPGA Firmware not loaded - loading will cause reboot;"
+
+    if [[ $force_reload != "force_reload" ]]; then
+        echo "Refusing reboot. Stopping now."
+        exit 11
+    else
+        echo "Forcing install of FPGA firmware! SEPP will reboot soon!"
+    fi
 fi
 
-if [[ $force_reload == "force_reload" ]]; then
-    echo "Forcing install of FPGA firmware! SEPP will reboot soon!"
-else
-    echo "Refusing reboot. Stopping now."
-    exit 11
-fi
+
 cd /tmp
 ## Exp202 software (device tree)
 # dd if=/dev/mmcblk0 bs=512 skip=13664256 count=16384 | gnu_tar.tar xv -C /tmp 
