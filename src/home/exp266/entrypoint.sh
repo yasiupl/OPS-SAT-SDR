@@ -68,6 +68,9 @@ echo "$CONFIG" > running_config.ini
 echo "#### Setup FPGA firmware - devicetree."
 ./helper/firmware_setup.sh
 
+echo "#### Setup eMMC partition."
+./helper/create_emmc_partition.sh
+
 ## Start recording
 echo "#### Start Recording."
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
