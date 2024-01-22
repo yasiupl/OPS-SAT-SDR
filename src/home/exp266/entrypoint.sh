@@ -14,7 +14,7 @@ DOWNLINK_PATH=/esoc-apps-flash/fms/filestore/toGround/
 
 config="config.ini"
 id=exp266
-binary=exp202_single_exec_to_file
+binary=exp202-tar_write
 sdr_sample_name_slug="${id}_${binary}_"
 
 samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
