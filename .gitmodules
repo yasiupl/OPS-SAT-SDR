@@ -10,3 +10,6 @@
 [submodule "dependencies/csdr"]
 	path = dependencies/csdr
 	url = https://github.com/ha7ilm/csdr.git
+[submodule "dependencies/microtar"]
+	path = dependencies/microtar
+	url = https://github.com/rxi/microtar
