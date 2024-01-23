@@ -2,6 +2,8 @@
 
 set -ex
 
+format=${1:-"false"}
+
 #/usr/sbin/blkpg-part add /dev/mmcblk0 180 7004487680 192937984
 partition=180
 start_address=7004487680
@@ -33,15 +35,25 @@ create_partition() {
     sleep 2
 }
 
-main() {
-    check_partition $partition
+format_partition() {
+    # Align to 4096 blocks (actual filesystem blocks)
+    echo "Formating partition"
+    dd if=/dev/zero of=/dev/mmcblk0p$partition_number bs=4096 count=$(($lenght_512 / 8))
+}
+
+check_or_create_partition() {
+        check_partition $partition
     if [ $? -eq 0 ]; then
         echo "Partition $partition exists!"
     else
         create_partition $partition $start_address $length
     fi
+
+    if [ $format = "wipe_partition" ]; then
+        format_partition
+    fi
 }
 
 set +ex
 
-main
+check_or_create_partition

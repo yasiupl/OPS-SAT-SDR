@@ -14,7 +14,7 @@ DOWNLINK_PATH=/esoc-apps-flash/fms/filestore/toGround/
 
 config="config.ini"
 id=exp266
-binary=exp202-tar_write
+binary=./bin/exp202-tar_write
 sdr_sample_name_slug="${id}_${binary}_"
 
 samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
@@ -29,6 +29,12 @@ gain_db=$(awk -F "=" '/gain_db/ {print $2}' $config)
 number_of_samples=$(awk -F "=" '/number_of_samples/ {print $2}' $config)
 calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
 
+## MOTD
+
+recording_realsize=$(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1)))
+lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg)))
+
+
 MOTD="
    ___  ___  ___     ___   _ _____   ___ ___  ___   
   / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \  
@@ -40,13 +46,15 @@ MOTD="
                        et al. 
 
   Center frequency: $carrier_frequency_GHz GHz;
-  Sampling Rate:    $(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1))) MHz (id: $samp_freq_index);
-  Low Pass filter:  $(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg))) MHz (id: $lpf_bw_cfg);
+  Sampling Rate:    $recording_realsize MHz (id: $samp_freq_index);
+  Low Pass filter:  $lpf_realvalue MHz (id: $lpf_bw_cfg);
   Gain:             $gain_db dB;
   Calibrate:        $calibrate_frontend
 
   Recording path:   $RECORDING_PATH
   Output path:      $OUTPUT_PATH/$OUTPUT_SLUG
+  Downlink path:    $DOWNLINK_PATH
+  Expected size:    $(($(($number_of_samples*4))/$((1024*1024))))MB
 "
 echo "$MOTD"
 
@@ -68,14 +76,21 @@ echo "$CONFIG" > running_config.ini
 echo "#### Setup FPGA firmware - devicetree."
 ./helper/firmware_setup.sh
 
+## Setup eMMC partition
 echo "#### Setup eMMC partition."
-./helper/create_emmc_partition.sh
+wipe_partition=$(awk -F "=" '/wipe_partition/ {print $2}' $config)
+if [[ $wipe_partition == true ]]; then
+    echo "#### Wiping partition clean. It make take a while, account for this in planning!"
+    ./helper/create_emmc_partition.sh wipe_partition
+    else
+    ./helper/create_emmc_partition.sh
+fi
 
 ## Start recording
 echo "#### Start Recording."
 #export LD_PRELOAD="$HOME_DIR/lib/libfftw3.so.3;$HOME_DIR/lib/libsdr_api.so;$HOME_DIR/lib/libsepp_api_core.so;$HOME_DIR/lib/libsepp_ic.so"
 #./bin/sdr_sidlock_launcher running_config.ini
-./bin/${binary} running_config.ini
+${binary} running_config.ini
 mv running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 

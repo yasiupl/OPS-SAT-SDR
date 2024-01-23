@@ -5,6 +5,10 @@ set -ex
 #predef_md5sum="0409f31cbfa6748c2a79ddeb769247d7"
 file_path=$1
 
+if [ -z $file_path ]; then
+    echo "No file provided. Usage: $0 path/to_directory/ OR $0 path/to_file.txt"
+fi
+
 #/usr/sbin/blkpg-part add /dev/mmcblk0 180 7004487680 192937984
 partition=180
 start_address=7004487680
@@ -60,7 +64,7 @@ main() {
     fi
 
     copy_and_verify $file_path $partition
-}
+}A
 
 set +ex
 
