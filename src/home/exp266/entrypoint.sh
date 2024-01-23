@@ -102,7 +102,9 @@ downlink_samples=$(awk -F "=" '/downlink_samples/ {print $2}' $config)
 ## Downlink from eMMC
 if [[ $downlink_samples == true ]]; then
     echo "#### Restore samples from eMMC and put for downlink."
-    dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 of=$OUTPUT_PATH/sdr_carrier-${carrier_frequency_GHz}GHz_sampling-${samp_freq_index}_lpf-${lpf_bw_cfg}_$OUTPUT_SLUG.cs16
+    ./helper/downlink_from_emmc.sh
+else
+    echo "#### Samples stored in the eMMC. To downlink them later, run 'cd $PWD; ./helper/downlink_from_emmc.sh'"
 fi
 
 tar_downlink=$(awk -F "=" '/tar_downlink/ {print $2}' $config)
