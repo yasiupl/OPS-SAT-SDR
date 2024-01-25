@@ -55,6 +55,7 @@ MOTD="
   Output path:      $OUTPUT_PATH/$OUTPUT_SLUG
   Downlink path:    $DOWNLINK_PATH
   Expected size:    $(($(($number_of_samples*4))/$((1024*1024))))MB
+  Samples:          $number_of_samples
 "
 echo "$MOTD"
 
