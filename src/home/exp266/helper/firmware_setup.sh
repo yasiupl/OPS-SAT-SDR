@@ -17,7 +17,7 @@ else
     if [[ "$force_reload" == "force_reload" ]]; then
         echo "Forcing install of FPGA firmware! SEPP will reboot any moment now!"
     else
-        echo "Refusing reboot. Stopping now."
+        echo "Refusing reboot. Stopping now. You can force the reboot by running <$0 force_reload>"
         exit 11
     fi
 fi
