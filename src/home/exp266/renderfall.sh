@@ -40,7 +40,7 @@ if [ -z $OUT_FOLDER ]; then
     echo "No output folder given. Defaulting to \"$OUT_FOLDER\"."
 fi
 
-FILENAME=renderfall_${WINDOW}_${SIZE}
+FILENAME=renderfall_${WINDOW}_${SIZE}_${DATE}
 echo Filename: $FILENAME
 ARGUMENTS="$IN_FILE --format int16 --fftsize $SIZE --window $WINDOW --outfile $OUT_FOLDER/$FILENAME.png"
 echo $BINARY_PATH/$RENDERFALL_BINARY $ARGUMENTS
