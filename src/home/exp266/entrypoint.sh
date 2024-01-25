@@ -71,7 +71,7 @@ output_path = $RECORDING_PATH"
 
 echo "$CONFIG" > running_config.ini
 
-#set -ex
+set -e
 
 ## Setup FPGA firmware - devicetree
 echo "#### Setup FPGA firmware - devicetree."
@@ -103,6 +103,7 @@ mv running_config.ini $OUTPUT_PATH/
 
 echo "#### Recording finished! File: $RECORDING_PATH"
 
+set +e
 
 ## Process the recording
 waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
