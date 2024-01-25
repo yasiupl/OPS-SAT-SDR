@@ -5,14 +5,15 @@
 set -x
 
 restored_date=$(date +"%Y%m%d_%H%M%S")
-output_path=/esoc-apps-flash/fms/filestore/toGround
-name=${1:-sdr_recording_restored_${restored_date}}
+output_path=${1:-"/esoc-apps-flash/fms/filestore/toGround"}
 
 mkdir -p $output_path
 
 #tar cf - A | gzip -9 > B.tar.gz
 #dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 of=$output_path/$name.tar
-dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 | gzip -1 -v > $output_path/$name.tar.gz
+stored_filename=$(gnu_tar.tar tvf /dev/mmcblk0p180 | awk '{ print $6 }')
+echo "Stored file: $stored_filename"
+dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 | gzip -1 -v > $output_path/$stored_filename.tar.gz
 gnu_tar.tar tvf $output_path/$name.tar.gz
 ls -lah $output_path
 
