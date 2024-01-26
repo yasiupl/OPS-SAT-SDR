@@ -27,6 +27,9 @@ while [ "$string" != "${string#*=}" ]; do
     key="${pair%=*}"
     value="${pair#*=}"
 
+    # Removing the initial "sdr_exp202-" from the key
+    key="${key#sdr_exp202-}"
+
     # Storing in variables (you can customize this part)
     case $key in
         "f_sampling_index") f_sampling_index="$value" ;;
