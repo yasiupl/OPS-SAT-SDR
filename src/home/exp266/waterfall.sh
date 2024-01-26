@@ -1,5 +1,8 @@
 #/bin/env sh
 
+# Author: Marcin Jasiukowicz <hi@y4s.io>
+# Based on: https://github.com/TomMladenov/renderfall
+
 EXP_PATH=/home/exp266
 BINARY_PATH=$EXP_PATH/bin
 LIB_PATH=$EXP_PATH/lib

@@ -64,7 +64,7 @@ main() {
     fi
 
     copy_and_verify $file_path $partition
-}A
+}
 
 set +ex
 
