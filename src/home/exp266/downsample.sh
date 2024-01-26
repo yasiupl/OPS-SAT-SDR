@@ -14,7 +14,7 @@ EXP_PATH=$(dirname $0)
 BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
 DATE=$(date +"%Y%m%d_%H%M%S")
-OUT_FOLDER=${2:-"toGround/downsample_${DATE}"}
+OUT_FOLDER=${1:-"toGround/downsample_${DATE}"}
 mkdir -p $OUT_FOLDER
 
 
