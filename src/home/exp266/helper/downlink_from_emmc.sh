@@ -12,7 +12,7 @@ mkdir -p $DOWNLINK_PATH
 stored_filename=$($(dirname $0)/peek_partition.sh | awk '{ print $6 }')
 echo "### Restoring $stored_filename to $DOWNLINK_PATH"
 
-$(dirname $0)/stream_partition.sh | gzip -1 -v > $DOWNLINK_PATH/$stored_filename.tar.gz
+$(dirname $0)/stream_emmc.sh | gzip -1 -v > $DOWNLINK_PATH/$stored_filename.tar.gz
 
 echo "### Content of the restored file:"
 gnu_tar.tar tvf $DOWNLINK_PATH/$name.tar.gz
