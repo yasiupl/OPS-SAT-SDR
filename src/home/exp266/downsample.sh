@@ -51,7 +51,7 @@ MOTD="
 
   ## Downsampling parameters:
 
-  New frequency:    $(python3 -c "print($f_center+downsample_shift/1000000000)") GHz;
+  New frequency:    $(python3 -c "print($f_center+$downsample_shift/1000000000)") GHz;
   Shift:            $(python3 -c "print($downsample_shift/1000)") kHz;
   Bandwidth         $(python3 -c "print($downsample_rate/1000)") kHz;
   
