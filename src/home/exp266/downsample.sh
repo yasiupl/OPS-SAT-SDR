@@ -14,20 +14,9 @@ EXP_PATH=$(dirname $0)
 BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
 
-IN_FILE=$1
-OUT_FOLDER=$2
 DATE=$(date +"%Y-%m-%dT%H-%M-%S")
-OUTPUT=toGround/$DATE
-
-## Check or recreate partition
-$EXP_PATH/helper/create_emmc_partition.sh
-
+OUTPUT=toGround/downsampled-$DATE
 mkdir -p $OUTPUT
-
-## Dynamic config
-downsample_shift=$(awk -F "=" '/downsample_shift/ {printf "%s",$2}' $CONFIG_FILE)
-downsample_rate=$(awk -F "=" '/downsample_rate/ {printf "%s",$2}' $CONFIG_FILE)
-downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
 
 
 ## Decode metadata from filename:
@@ -39,23 +28,22 @@ echo "## Found recording: $stored_filename"
 
 echo "### Reading metadata from filename..."
 
-string=$stored_filename
-regex="\(.*=[0-9.]*\)"
+# Grep all parameter=value pairs
+pairs=$(echo "$stored_filename" | grep -o "\(.*=[0-9.]*\)")
 
-# Using grep to extract all pairs
-pairs=$(echo "$string" | grep -o "$regex")
-
-# Storing in variables (you can customize this part)
 f_sampling_index=$(echo "$pairs" | grep -o "f_sampling_index=[0-9.]*" | cut -d'=' -f2)
 lpf_index=$(echo "$pairs" | grep -o "lpf_index=[0-9.]*" | cut -d'=' -f2)
 f_center=$(echo "$pairs" | grep -o "f_center=[0-9.]*" | cut -d'=' -f2)
 gain=$(echo "$pairs" | grep -o "gain=[0-9.]*" | cut -d'=' -f2)
 timestamp=$(echo "$pairs" | grep -o "timestamp=[0-9.]*" | cut -d'=' -f2)
 
+# Decode indexes into real values
 
 sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($f_sampling_index+1)))
 lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index+1)))
 
+
+# Print metadata
 
 MOTD="
 
@@ -84,6 +72,7 @@ echo "### Starting resampling to file: $filename"
 ## Works on EM:
 $EXP_PATH/helper/stream_emmc.sh | gnu_tar.tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUTPUT/$filename
 
+downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
 if [[ $downsample_waterfall == true ]]; then
   echo "### Generating waterfall..."
   $EXP_PATH/waterfall.sh $OUTPUT/$filename $OUTPUT
