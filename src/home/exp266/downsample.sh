@@ -19,7 +19,13 @@ downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $dow
 
 
 ## Decode metadata from filename:
+echo "### Reading stored archive..."
+
 stored_filename=$(gnu_tar.tar tvf $partition | awk '{ print $6 }')
+
+echo "## Found recording: $stored_filename"
+
+echo "### Reading metadata from filename..."
 
 string=$stored_filename
 regex="\(.*=[0-9.]*\)"
@@ -62,9 +68,14 @@ sampling_Hz=$(python3 -c "print($sampling_realvalue*1000000)")
 
 filename=sdr_exp266_downsampled-f_c=${fc}-shift=${downsample_shift}-fs=${downsample_samplerate}_$DATE.cs16
 
+echo "### Starting resampling to file: $filename"
+
 ## Works on EM:
 dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 | gnu_tar.tar -xvO | bin/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | bin/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUTPUT/$filename
 
 if [[ $downsample_waterfall == true ]]; then
+  echo "### Generating waterfall..."
   ./waterfall.sh $OUTPUT/$filename $OUTPUT
 fi
+
+echo "### Downsampling done, byebye!"
