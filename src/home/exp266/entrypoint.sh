@@ -6,8 +6,7 @@ BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
 DATE=$(date +"%Y%m%d_%H%M%S")
 RECORDING_PATH=$(awk -F "=" '/recording_path/ {printf "%s",$2}' $CONFIG_FILE)
-
-OUTPUT_PATH=${1}
+OUTPUT_PATH=${1:-"$EXP_PATH/toGround/$DATE"}
 DOWNLINK_PATH=$(awk -F "=" '/downlink_path/ {printf "%s",$2}' $CONFIG_FILE)
 mkdir -p $DOWNLINK_PATH
 
@@ -49,7 +48,7 @@ if [[ $downlink_samples == true ]]; then
     echo "#### Restore samples from eMMC and put for downlink."
     $EXP_PATH/helper/downlink_from_emmc.sh $DOWNLINK_PATH
 else
-    echo "#### Samples stored in the eMMC. To downlink them later, run 'cd $PWD; ./helper/downlink_from_emmc.sh'"
+    echo "#### Samples stored in the eMMC. To downlink them later, run 'cd /home/exp266; ./helper/downlink_from_emmc.sh'"
 fi
 
 downlink_to_ground=$(awk -F "=" '/downlink_to_ground/ {printf "%s",$2}' $CONFIG_FILE)
@@ -57,6 +56,8 @@ if [[ $downlink_to_ground == true ]]; then
   filename="exp266_sdr_${action}_${DATE}.tar.gz"
   echo "#### Compress and move to downlink folder. Filename: $filename"
   tar cfzv $DOWNLINK_PATH/$filename $OUTPUT_PATH
+  echo "#### Removing original folder."
+  rm -r $OUTPUT_PATH
   echo "#### Downlink folder:"
   ls -lhR $DOWNLINK_PATH
 fi
