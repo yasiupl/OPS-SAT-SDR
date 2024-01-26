@@ -17,12 +17,12 @@ id=exp266
 binary=./bin/exp202-tar_write
 sdr_sample_name_slug="${id}_${binary}_"
 # Read the config
-carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {print $2}' $config)
-samp_freq_index=$(awk -F "=" '/samp_freq_index/ {print $2}' $config)
-lpf_bw_cfg=$(awk -F "=" '/lpf_bw_cfg/ {print $2}' $config)
-gain_db=$(awk -F "=" '/gain_db/ {print $2}' $config)
-number_of_samples=$(awk -F "=" '/number_of_samples/ {print $2}' $config)
-calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
+carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {printf "%s",$2}' $config)
+samp_freq_index=$(awk -F "=" '/samp_freq_index/ {printf "%s",$2}' $config)
+lpf_bw_cfg=$(awk -F "=" '/lpf_bw_cfg/ {printf "%s",$2}' $config)
+gain_db=$(awk -F "=" '/gain_db/ {printf "%s",$2}' $config)
+number_of_samples=$(awk -F "=" '/number_of_samples/ {printf "%s",$2}' $config)
+calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {printf "%s",$2}' $config)
 
 ## MOTD
 
@@ -55,6 +55,7 @@ MOTD="
   Downlink path:    $DOWNLINK_PATH
   Expected size:    $(($(($number_of_samples*4))/$((1024*1024))))MB
   Samples:          $number_of_samples
+  
 "
 echo "$MOTD"
 
@@ -78,7 +79,7 @@ echo "#### Setup FPGA firmware - devicetree."
 
 ## Setup eMMC partition
 echo "#### Setup eMMC partition."
-wipe_partition=$(awk -F "=" '/wipe_partition/ {print $2}' $config)
+wipe_partition=$(awk -F "=" '/wipe_partition/ {printf "%s",$2}' $config)
 if [[ $wipe_partition == true ]]; then
     echo "#### Wiping partition clean. It make take a while, account for this in planning!"
     ./helper/create_emmc_partition.sh wipe_partition
@@ -105,7 +106,7 @@ echo "#### Recording finished! File: $RECORDING_PATH"
 set +e
 
 ## Process the recording
-waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
+waterfall_render=$(awk -F "=" '/waterfall_render/ {printf "%s",$2}' $config)
 if [[ $waterfall_render == true ]]; then
   echo "#### Generate the waterfall."
   ./waterfall.sh $RECORDING_PATH $OUTPUT_PATH
@@ -114,7 +115,7 @@ if [[ $waterfall_render == true ]]; then
 fi
 
 ## Downlink
-downlink_samples=$(awk -F "=" '/downlink_samples/ {print $2}' $config)
+downlink_samples=$(awk -F "=" '/downlink_samples/ {printf "%s",$2}' $config)
 
 ## Downlink from eMMC
 if [[ $downlink_samples == true ]]; then
@@ -124,7 +125,7 @@ else
     echo "#### Samples stored in the eMMC. To downlink them later, run 'cd $PWD; ./helper/downlink_from_emmc.sh'"
 fi
 
-tar_downlink=$(awk -F "=" '/tar_downlink/ {print $2}' $config)
+tar_downlink=$(awk -F "=" '/tar_downlink/ {printf "%s",$2}' $config)
 if [[ $tar_downlink == true ]]; then
   echo "#### Compress and move to downlink folder. Filename: exp266_sdr_${OUTPUT_SLUG}.tar.gz"
   tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}.tar.gz $OUTPUT_PATH
