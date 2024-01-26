@@ -44,7 +44,7 @@ MOTD="
     TU-Graz, OPS-SAT MCT, Libre Space Foundation
                        et al. 
 
-  Center frequency: $carrier_frequency_GHz GHz;
+  Center frequency: $carrier_frequency_GHz GHz $(python3 -c "print(carrier_frequency_GHz*1000)")MHz;
   Sampling Rate:    $sampling_realvalue MHz (id: $samp_freq_index);
   Low Pass filter:  $lpf_realvalue MHz (id: $lpf_bw_cfg);
   Gain:             $gain_db dB;
@@ -53,7 +53,7 @@ MOTD="
   Recording path:   $RECORDING_PATH
   Output path:      $OUTPUT_PATH/$OUTPUT_SLUG
   Downlink path:    $DOWNLINK_PATH
-  Expected size:    $(($(($number_of_samples*4))/$((1024*1024))))MB
+  Expected size:    $(python3 -c "print(($number_of_samples*4)/(1024*1024)")MB
   Samples:          $number_of_samples
   
 "
