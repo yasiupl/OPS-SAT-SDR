@@ -6,17 +6,18 @@ $(dirname $0)/create_emmc_partition.sh
 
 set -x
 
-restored_date=$(date +"%Y%m%d_%H%M%S")
-output_path=${1:-"/esoc-apps-flash/fms/filestore/toGround"}
+DOWNLINK_PATH=${1:-"/esoc-apps-flash/fms/filestore/toGround"}
+mkdir -p $DOWNLINK_PATH
 
-mkdir -p $output_path
-
-#tar cf - A | gzip -9 > B.tar.gz
-#dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 of=$output_path/$name.tar
 stored_filename=$($(dirname $0)/peek_partition.sh | awk '{ print $6 }')
-echo "Stored file: $stored_filename"
-$(dirname $0)/stream_partition.sh | gzip -1 -v > $output_path/$stored_filename.tar.gz
-gnu_tar.tar tvf $output_path/$name.tar.gz
-ls -lah $output_path
+echo "### Restoring $stored_filename to $DOWNLINK_PATH"
+
+$(dirname $0)/stream_partition.sh | gzip -1 -v > $DOWNLINK_PATH/$stored_filename.tar.gz
+
+echo "### Content of the restored file:"
+gnu_tar.tar tvf $DOWNLINK_PATH/$name.tar.gz
+
+echo "### Content of the downlink folder:"
+ls -lhR $DOWNLINK_PATH
 
 set +x

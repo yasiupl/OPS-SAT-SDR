@@ -13,10 +13,9 @@ lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.
 EXP_PATH=$(dirname $0)
 BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
-
-DATE=$(date +"%Y-%m-%dT%H-%M-%S")
-OUTPUT=toGround/downsampled-$DATE
-mkdir -p $OUTPUT
+DATE=$(date +"%Y%m%d_%H%M%S")
+OUT_FOLDER=${2:-"toGround/downsample_${DATE}"}
+mkdir -p $OUT_FOLDER
 
 
 ## Decode metadata from filename:
@@ -70,12 +69,12 @@ filename=sdr_exp266_downsampled-f_c=${f_center}-shift=${downsample_shift}-fs=${d
 echo "### Starting resampling to file: $filename"
 
 ## Works on EM:
-$EXP_PATH/helper/stream_emmc.sh | gnu_tar.tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUTPUT/$filename
+$EXP_PATH/helper/stream_emmc.sh | gnu_tar.tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUT_FOLDER/$filename
 
 downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
 if [[ $downsample_waterfall == true ]]; then
   echo "### Generating waterfall..."
-  $EXP_PATH/waterfall.sh $OUTPUT/$filename $OUTPUT
+  $EXP_PATH/waterfall.sh $OUT_FOLDER/$filename $OUT_FOLDER
 fi
 
 echo "#### Downsampling done, byebye!"
