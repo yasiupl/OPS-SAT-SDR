@@ -9,8 +9,12 @@ $(dirname $0)/create_emmc_partition.sh
 DOWNLINK_PATH=${1:-"/esoc-apps-flash/fms/filestore/toGround"}
 mkdir -p $DOWNLINK_PATH
 
-stored_filename=$($(dirname $0)/peek_emmc.sh | awk '{ print $6 }')
-echo "### Restoring $stored_filename to $DOWNLINK_PATH"
+echo "### Reading stored archive..."
+
+stored_filename=$($EXP_PATH/helper/peek_emmc.sh | awk '{ printf "%s",$6 }')
+
+echo "## Found recording: $stored_filename"
+echo "### Restoring to $DOWNLINK_PATH"
 
 $(dirname $0)/stream_emmc.sh | gnu_tar.tar -xvO | gzip -1 -v > $DOWNLINK_PATH/$stored_filename.gz
 

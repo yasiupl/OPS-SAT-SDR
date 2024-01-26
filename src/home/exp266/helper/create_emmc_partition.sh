@@ -42,7 +42,8 @@ format_partition() {
 }
 
 check_or_create_partition() {
-        check_partition $partition
+    echo "Check if partition exists."
+    check_partition $partition
     if [ $? -eq 0 ]; then
         echo "Partition $partition exists!"
     else
