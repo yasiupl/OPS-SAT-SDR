@@ -33,7 +33,7 @@ downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CON
 ## Decode metadata from filename:
 echo "### Reading stored archive..."
 
-stored_filename=$($(dirname $0)/helper/peek_emmc.sh | awk '{ print $6 }')
+stored_filename=$($(dirname $0)/helper/peek_emmc.sh | awk '{ printf "%s",$6 }')
 
 echo "## Found recording: $stored_filename"
 
