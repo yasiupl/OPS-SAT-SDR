@@ -5,9 +5,11 @@ LIB_PATH=$EXP_PATH/lib
 BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
 DATE=$(date +"%Y%m%d_%H%M%S")
+RECORDING_PATH=$(awk -F "=" '/recording_path/ {printf "%s",$2}' $CONFIG_FILE)
+
 OUTPUT_PATH=${1}
 DOWNLINK_PATH=$(awk -F "=" '/downlink_path/ {printf "%s",$2}' $CONFIG_FILE)
-RECORDING_PATH=/dev/mmcblk0p180
+mkdir -p $DOWNLINK_PATH
 
 ## Run one of the routines:
 

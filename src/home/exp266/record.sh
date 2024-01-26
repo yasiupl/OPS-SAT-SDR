@@ -9,22 +9,20 @@
 EXP_PATH=$(dirname $0)
 BINARY_PATH=$EXP_PATH/bin
 LIB_PATH=$EXP_PATH/lib
+CONFIG_FILE=$EXP_PATH/config.ini
 DATE=$(date +"%Y%m%d_%H%M%S")
 OUTPUT_PATH=${1:-"${EXP_PATH}/toGround/recording_$DATE"}
-RECORDING_PATH=/dev/mmcblk0p180
 
-config="config.ini"
-id=exp266
-binary=exp202-tar_write
-sdr_sample_name_slug="${id}_${binary}_"
+exp202_binary=exp202-tar_write
 
 # Read the config
-carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {printf "%s",$2}' $config)
-samp_freq_index=$(awk -F "=" '/samp_freq_index/ {printf "%s",$2}' $config)
-lpf_bw_cfg=$(awk -F "=" '/lpf_bw_cfg/ {printf "%s",$2}' $config)
-gain_db=$(awk -F "=" '/gain_db/ {printf "%s",$2}' $config)
-number_of_samples=$(awk -F "=" '/number_of_samples/ {printf "%s",$2}' $config)
-calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {printf "%s",$2}' $config)
+carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {printf "%s",$2}' $CONFIG_FILE)
+samp_freq_index=$(awk -F "=" '/samp_freq_index/ {printf "%s",$2}' $CONFIG_FILE)
+lpf_bw_cfg=$(awk -F "=" '/lpf_bw_cfg/ {printf "%s",$2}' $CONFIG_FILE)
+gain_db=$(awk -F "=" '/gain_db/ {printf "%s",$2}' $CONFIG_FILE)
+number_of_samples=$(awk -F "=" '/number_of_samples/ {printf "%s",$2}' $CONFIG_FILE)
+calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {printf "%s",$2}' $CONFIG_FILE)
+RECORDING_PATH=$(awk -F "=" '/recording_path/ {printf "%s",$2}' $CONFIG_FILE)
 
 ## MOTD
 
@@ -79,7 +77,7 @@ $EXP_PATH/helper/firmware_setup.sh
 
 ## Setup eMMC partition
 echo "#### Setup eMMC partition."
-wipe_partition=$(awk -F "=" '/wipe_partition/ {printf "%s",$2}' $config)
+wipe_partition=$(awk -F "=" '/wipe_partition/ {printf "%s",$2}' $CONFIG_FILE)
 if [[ $wipe_partition == true ]]; then
     echo "#### Wiping partition clean. It make take a while, account for this in planning!"
     $EXP_PATH/helper/create_emmc_partition.sh wipe_partition
@@ -90,7 +88,7 @@ fi
 ## Start recording
 echo "#### Start Recording."
 #export LD_PRELOAD="$LIB_PATH/libfftw3.so.3;$LIB_PATH/libsdr_api.so;$LIB_PATH/libsepp_api_core.so;$LIB_PATH/libsepp_ic.so"
-$BINARY_PATH/$binary running_config.ini
+$BINARY_PATH/$exp202_binary running_config.ini
 mv running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 
@@ -99,7 +97,7 @@ echo "#### Recording finished! File: $RECORDING_PATH"
 set +e
 
 ## Process the recording
-waterfall_render=$(awk -F "=" '/waterfall_render/ {printf "%s",$2}' $config)
+waterfall_render=$(awk -F "=" '/waterfall_render/ {printf "%s",$2}' $CONFIG_FILE)
 if [[ $waterfall_render == true ]]; then
   echo "#### Generate the waterfall."
   $EXP_PATH/waterfall.sh $RECORDING_PATH $OUTPUT_PATH
