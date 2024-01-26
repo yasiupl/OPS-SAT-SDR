@@ -21,8 +21,8 @@ waterfall_convert_to_jpg=$(awk -F "=" '/waterfall_convert_to_jpg/ {printf "%s",$
 FFT=${3:-"$waterfall_fft_size"}
 
 echo "### Generating waterfall"
-FILENAME=renderfall_${waterfall_window}_${waterfall_fft_size}_${DATE}
-ARGUMENTS="$IN_FILE --format int16 --fftsize $waterfall_fft_size --window $waterfall_window --outfile $OUT_FOLDER/$FILENAME.png"
+FILENAME=renderfall_${waterfall_window}_${FFT}_${DATE}
+ARGUMENTS="$IN_FILE --format int16 --fftsize $FFT --window $waterfall_window --outfile $OUT_FOLDER/$FILENAME.png"
 echo "$BINARY_PATH/renderfall $ARGUMENTS"
 
 export LD_PRELOAD=$LIB_PATH/libfftw3.so.3
