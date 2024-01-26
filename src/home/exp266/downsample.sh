@@ -32,7 +32,7 @@ timestamp=$(echo "$pairs" | grep -o "timestamp=[0-9.]*" | cut -d'=' -f2)
 
 
 sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($f_sampling_index+1)))
-lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index)))
+lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index+1)))
 
 
 MOTD="

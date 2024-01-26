@@ -31,7 +31,7 @@ samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 
 lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.75" # MHz
 
 sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1)))
-lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg)))
+lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg+1)))
 
 
 MOTD="
