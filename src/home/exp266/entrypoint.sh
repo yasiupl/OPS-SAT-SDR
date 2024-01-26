@@ -4,7 +4,7 @@ EXP_PATH=$(dirname $0)
 LIB_PATH=$EXP_PATH/lib
 BINARY_PATH=$EXP_PATH/bin
 CONFIG_FILE=$EXP_PATH/config.ini
-
+DATE=$(date +"%Y%m%d_%H%M%S")
 OUTPUT_PATH=${1}
 DOWNLINK_PATH=$(awk -F "=" '/downlink_path/ {printf "%s",$2}' $CONFIG_FILE)
 RECORDING_PATH=/dev/mmcblk0p180
@@ -36,10 +36,11 @@ else
     echo "#### Samples stored in the eMMC. To downlink them later, run 'cd $PWD; ./helper/downlink_from_emmc.sh'"
 fi
 
-tar_downlink=$(awk -F "=" '/tar_downlink/ {printf "%s",$2}' $CONFIG_FILE)
-if [[ $tar_downlink == true ]]; then
-  echo "#### Compress and move to downlink folder. Filename: exp266_sdr_${OUTPUT_SLUG}.tar.gz"
-  tar cfzv $DOWNLINK_PATH/exp266_sdr_${OUTPUT_SLUG}.tar.gz $OUTPUT_PATH
+downlink_to_ground=$(awk -F "=" '/downlink_to_ground/ {printf "%s",$2}' $CONFIG_FILE)
+if [[ $downlink_to_ground == true ]]; then
+  filename="exp266_sdr_${action}_${DATE}.tar.gz"
+  echo "#### Compress and move to downlink folder. Filename: $filename"
+  tar cfzv $DOWNLINK_PATH/$filename $OUTPUT_PATH
   echo "#### Downlink folder:"
   ls -lhR $DOWNLINK_PATH
 fi
