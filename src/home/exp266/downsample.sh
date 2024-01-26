@@ -45,10 +45,10 @@ downsample_shift=$(awk -F "=" '/downsample_shift/ {printf "%s",$2}' $CONFIG_FILE
 downsample_cutoff_frequency=$(awk -F "=" '/downsample_cutoff_frequency/ {printf "%s",$2}' $CONFIG_FILE)
 # Print metadata
 
-sampling_Hz=$(python3 -c "print($sampling_realvalue*1000000)")
-decimation_rate=$(python3 -c "print($sampling_Hz/$downsample_cutoff_frequency)")
+sampling_Hz=$(python3 -c "print(round($sampling_realvalue*1000000))")
+decimation_rate=$(python3 -c "print(floor($sampling_Hz/$downsample_cutoff_frequency))")
 output_sample_rate=$(python3 -c "print($sampling_Hz/$decimation_rate)");
-new_center=$(python3 -c "print($f_center+$downsample_shift/1000000000)")
+new_center=$(python3 -c "print(round($f_center+$downsample_shift/1000000000))")
 
 MOTD="
 
