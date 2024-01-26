@@ -58,6 +58,8 @@ if [[ $downlink_to_ground == true ]]; then
   tar cfzv $DOWNLINK_PATH/$filename $OUTPUT_PATH
   echo "#### Removing original folder."
   rm -r $OUTPUT_PATH
+  echo "#### Removing original folder."
+  tar tvf $DOWNLINK_PATH/$filename
   echo "#### Downlink folder:"
   ls -lhR $DOWNLINK_PATH
 fi

@@ -70,7 +70,7 @@ filename=sdr_exp266_downsampled-f_c=${f_center}-shift=${downsample_shift}-fs=${d
 echo "### Starting resampling to file: $filename"
 
 ## Works on EM:
-$EXP_PATH/helper/stream_emmc.sh | gnu_tar.tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUT_FOLDER/$filename
+$EXP_PATH/helper/stream_emmc.sh | tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUT_FOLDER/$filename
 
 downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
 downsample_fft_size=$(awk -F "=" '/downsample_fft_size/ {printf "%s",$2}' $CONFIG_FILE)
