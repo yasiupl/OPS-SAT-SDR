@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+#set -ex
 
 format=${1:-"false"}
 
@@ -54,6 +54,6 @@ check_or_create_partition() {
     fi
 }
 
-set +ex
+#set +ex
 
 check_or_create_partition
