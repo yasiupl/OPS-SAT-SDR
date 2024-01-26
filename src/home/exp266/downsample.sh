@@ -73,9 +73,10 @@ echo "### Starting resampling to file: $filename"
 $EXP_PATH/helper/stream_emmc.sh | gnu_tar.tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUT_FOLDER/$filename
 
 downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
+downsample_fft_size=$(awk -F "=" '/downsample_fft_size/ {printf "%s",$2}' $CONFIG_FILE)
 if [[ $downsample_waterfall == true ]]; then
   echo "### Generating waterfall..."
-  $EXP_PATH/waterfall.sh $OUT_FOLDER/$filename $OUT_FOLDER
+  $EXP_PATH/waterfall.sh $OUT_FOLDER/$filename $OUT_FOLDER $downsample_fft_size
 fi
 
 echo "#### Downsampling done, byebye!"

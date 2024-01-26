@@ -13,9 +13,12 @@ DATE=$(date +"%Y%m%d_%H%M%S")
 IN_FILE=${1:-$RECORDING_PATH}
 OUT_FOLDER=${2:-"toGround/renderfall_${DATE}"}
 
+
 waterfall_window=$(awk -F "=" '/waterfall_window/ {printf "%s",$2}' $CONFIG_FILE)
 waterfall_fft_size=$(awk -F "=" '/waterfall_fft_size/ {printf "%s",$2}' $CONFIG_FILE)
 waterfall_convert_to_jpg=$(awk -F "=" '/waterfall_convert_to_jpg/ {printf "%s",$2}' $CONFIG_FILE)
+
+FFT=${3:-"$waterfall_fft_size"}
 
 echo "### Generating waterfall"
 FILENAME=renderfall_${waterfall_window}_${waterfall_fft_size}_${DATE}
