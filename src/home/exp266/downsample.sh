@@ -20,28 +20,16 @@ stored_filename=$(gnu_tar.tar tvf $partition | awk '{ print $6 }')
 string=$stored_filename
 regex="\(.*=[0-9.]*\)"
 
-while [ "$string" != "${string#*=}" ]; do
-    pair=$(echo "$string" | sed "s/$regex/\1/")
+# Using grep to extract all pairs
+pairs=$(echo "$string" | grep -o "$regex")
 
-    # Extracting key and value from the pair
-    key="${pair%=*}"
-    value="${pair#*=}"
+# Storing in variables (you can customize this part)
+f_sampling_index=$(echo "$pairs" | grep -o "f_sampling_index=[0-9.]*" | cut -d'=' -f2)
+lpf_index=$(echo "$pairs" | grep -o "lpf_index=[0-9.]*" | cut -d'=' -f2)
+f_center=$(echo "$pairs" | grep -o "f_center=[0-9.]*" | cut -d'=' -f2)
+gain=$(echo "$pairs" | grep -o "gain=[0-9.]*" | cut -d'=' -f2)
+timestamp=$(echo "$pairs" | grep -o "timestamp=[0-9.]*" | cut -d'=' -f2)
 
-    # Removing the initial "sdr_exp202-" from the key
-    key="${key#sdr_exp202-}"
-
-    # Storing in variables (you can customize this part)
-    case $key in
-        "f_sampling_index") f_sampling_index="$value" ;;
-        "lpf_index") lpf_index="$value" ;;
-        "f_center") f_center="$value" ;;
-        "gain") gain="$value" ;;
-        "timestamp") timestamp="$value" ;;
-        *) ;;
-    esac
-
-    string="${string#*$pair}"
-done
 
 sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($f_sampling_index+1)))
 lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index)))
