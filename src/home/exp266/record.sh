@@ -34,14 +34,6 @@ lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg+1)))
 
 
 MOTD="
-   ___  ___  ___     ___   _ _____   ___ ___  ___   
-  / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \  
- | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /  
-  \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\  
-
-                      Authors: 
-    TU-Graz, OPS-SAT MCT, Libre Space Foundation
-                       et al. 
 
   Center frequency: $carrier_frequency_GHz GHz $(python3 -c "print($carrier_frequency_GHz*1000)")MHz;
   Sampling Rate:    $sampling_realvalue MHz (id: $samp_freq_index);

@@ -15,6 +15,20 @@ mkdir -p $DOWNLINK_PATH
 
 action=$(awk -F "=" '/action/ {printf "%s",$2}' $CONFIG_FILE)
 
+
+MOTD="
+   ___  ___  ___     ___   _ _____   ___ ___  ___   
+  / _ \| _ \/ __|___/ __| /_\_   _| / __|   \| _ \  
+ | (_) |  _/\__ \___\__ \/ _ \| |   \__ \ |) |   /  
+  \___/|_|  |___/   |___/_/ \_\_|   |___/___/|_|_\  
+
+                      Authors: 
+    TU-Graz, OPS-SAT MCT, Libre Space Foundation
+                       et al. 
+"
+echo "$MOTD"
+echo "Executing: $action"
+
 if [[ "$action" == "record" ]]; then
   $EXP_PATH/record.sh $OUTPUT_PATH
 fi
