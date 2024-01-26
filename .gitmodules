@@ -13,3 +13,6 @@
 [submodule "dependencies/microtar"]
 	path = dependencies/microtar
 	url = https://github.com/rxi/microtar
+[submodule "dependencies/renderfall"]
+	path = dependencies/renderfall
+	url = https://github.com/TomMladenov/renderfall

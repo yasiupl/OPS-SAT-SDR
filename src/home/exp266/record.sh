@@ -16,11 +16,6 @@ config="config.ini"
 id=exp266
 binary=./bin/exp202-tar_write
 sdr_sample_name_slug="${id}_${binary}_"
-
-samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
-#samp_freq_index_lookup="0.750 0.875 1.25 1.5 1.92 2.5 2.75 3 3.5 4.375 5 6 7 10 12 14 16 18 20 30 38.4 40" # MHz (half)
-lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.75" # MHz
-
 # Read the config
 carrier_frequency_GHz=$(awk -F "=" '/carrier_frequency_GHz/ {print $2}' $config)
 samp_freq_index=$(awk -F "=" '/samp_freq_index/ {print $2}' $config)
@@ -31,7 +26,11 @@ calibrate_frontend=$(awk -F "=" '/calibrate_frontend/ {print $2}' $config)
 
 ## MOTD
 
-recording_realsize=$(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1)))
+samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
+#samp_freq_index_lookup="0.750 0.875 1.25 1.5 1.92 2.5 2.75 3 3.5 4.375 5 6 7 10 12 14 16 18 20 30 38.4 40" # MHz (half)
+lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.75" # MHz
+
+sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($samp_freq_index+1)))
 lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_bw_cfg)))
 
 
@@ -46,7 +45,7 @@ MOTD="
                        et al. 
 
   Center frequency: $carrier_frequency_GHz GHz;
-  Sampling Rate:    $recording_realsize MHz (id: $samp_freq_index);
+  Sampling Rate:    $sampling_realvalue MHz (id: $samp_freq_index);
   Low Pass filter:  $lpf_realvalue MHz (id: $lpf_bw_cfg);
   Gain:             $gain_db dB;
   Calibrate:        $calibrate_frontend
@@ -109,8 +108,9 @@ set +e
 waterfall_render=$(awk -F "=" '/waterfall_render/ {print $2}' $config)
 if [[ $waterfall_render == true ]]; then
   echo "#### Generate the waterfall."
-  ./renderfall.sh $RECORDING_PATH $OUTPUT_PATH
-  renderfall_name=$(ls -rt $OUTPUT_PATH/ | tail -n1)
+  ./waterfall.sh $RECORDING_PATH $OUTPUT_PATH
+  waterfall_name=$(ls -rt $OUTPUT_PATH/ | tail -n1)
+  echo "#### Waterfall generated: $waterfall_name"
 fi
 
 ## Downlink
