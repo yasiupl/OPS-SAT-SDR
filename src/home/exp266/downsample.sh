@@ -42,35 +42,42 @@ sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($f_sampling
 lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index+1)))
 
 downsample_shift=$(awk -F "=" '/downsample_shift/ {printf "%s",$2}' $CONFIG_FILE)
-downsample_rate=$(awk -F "=" '/downsample_rate/ {printf "%s",$2}' $CONFIG_FILE)
+downsample_cutoff_frequency=$(awk -F "=" '/downsample_cutoff_frequency/ {printf "%s",$2}' $CONFIG_FILE)
 # Print metadata
+
+sampling_Hz=$(python3 -c "print($sampling_realvalue*1000000)")
+decimation_rate=$(python3 -c "print($sampling_Hz/$downsample_cutoff_frequency)")
+output_sample_rate=$(python3 -c "print($sampling_Hz/$decimation_rate)");
+new_center=$(python3 -c "print($f_center+$downsample_shift/1000000000)")
 
 MOTD="
 
   ## Stored recording parameters:
 
   Stored filename:  $stored_filename;
-  Center frequency: $f_center GHz  ($(python3 -c "print($f_center*1000)"));
+  Center frequency: $f_center GHz;
   Sampling Rate:    $sampling_realvalue MHz (id: $f_sampling_index);
   Low Pass filter:  $lpf_realvalue MHz (id: $lpf_index);
   Gain:             $gain dB;
 
   ## Downsampling parameters:
 
-  New frequency:    $(python3 -c "print($f_center+$downsample_shift/1000000000)") GHz;
-  Shift:            $(python3 -c "print($downsample_shift/1000)") kHz;
-  Bandwidth         $(python3 -c "print($downsample_rate/1000)") kHz;
+  Cutoff:           $downsample_cutoff_frequency Hz;
+  Shift:            $downsample_shift Hz;
+  New frequency:    $new_center GHz;
+  New sampling rate:$output_sample_rate Hz;
   
 "
 echo "$MOTD"
 
-sampling_Hz=$(python3 -c "print($sampling_realvalue*1000000)")
-filename=sdr_exp266_downsampled-f_c=${f_center}-shift=${downsample_shift}-fs=${downsample_rate}_$DATE.cs16
+
+
+filename=sdr_exp266_downsampled-f_c=${f_center}-shift=${downsample_shift}-fs=${output_sample_rate}_$DATE.cs16
 
 echo "### Starting resampling to file: $filename"
 
 ## Works on EM:
-$EXP_PATH/helper/stream_emmc.sh | tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUT_FOLDER/$filename
+$EXP_PATH/helper/stream_emmc.sh | tar -xvO | $BINARY_PATH/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | $BINARY_PATH/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_cutoff_frequency -o $OUT_FOLDER/$filename
 
 downsample_waterfall=$(awk -F "=" '/downsample_waterfall/ {printf "%s",$2}' $CONFIG_FILE)
 downsample_fft_size=$(awk -F "=" '/downsample_fft_size/ {printf "%s",$2}' $CONFIG_FILE)

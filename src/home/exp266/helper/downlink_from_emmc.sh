@@ -11,7 +11,7 @@ mkdir -p $DOWNLINK_PATH
 
 echo "### Reading stored archive..."
 
-stored_filename=$($(dirname $0)/helper/peek_emmc.sh | awk '{ printf "%s",$6 }')
+stored_filename=$($(dirname $0)/peek_emmc.sh | awk '{ printf "%s",$6 }')
 
 echo "## Found recording: $stored_filename"
 echo "### Restoring to $DOWNLINK_PATH"
