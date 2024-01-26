@@ -20,6 +20,8 @@ waterfall_convert_to_jpg=$(awk -F "=" '/waterfall_convert_to_jpg/ {printf "%s",$
 
 FFT=${3:-"$waterfall_fft_size"}
 
+$EXP_PATH/helper/create_emmc_partition.sh
+
 echo "### Generating waterfall"
 FILENAME=renderfall_${waterfall_window}_${FFT}_${DATE}
 ARGUMENTS="$IN_FILE --format int16 --fftsize $FFT --window $waterfall_window --outfile $OUT_FOLDER/$FILENAME.png"

@@ -28,6 +28,8 @@ MOTD="
 echo "$MOTD"
 echo "Executing: $action"
 
+$EXP_PATH/helper/create_emmc_partition.sh
+
 if [[ "$action" == "record" ]]; then
   $EXP_PATH/record.sh $OUTPUT_PATH
 fi
@@ -38,6 +40,10 @@ fi
 
 if [[ "$action" == "downsample" ]]; then
   $EXP_PATH/downsample.sh $OUTPUT_PATH
+fi
+
+if [[ "$action" == "downlink" ]]; then
+  $EXP_PATH/helper/downlink_from_emmc.sh $DOWNLINK_PATH
 fi
 
 ## Downlink

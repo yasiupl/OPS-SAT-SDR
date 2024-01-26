@@ -11,12 +11,12 @@ mkdir -p $DOWNLINK_PATH
 
 echo "### Reading stored archive..."
 
-stored_filename=$($EXP_PATH/helper/peek_emmc.sh | awk '{ printf "%s",$6 }')
+stored_filename=$($(dirname $0)/helper/peek_emmc.sh | awk '{ printf "%s",$6 }')
 
 echo "## Found recording: $stored_filename"
 echo "### Restoring to $DOWNLINK_PATH"
 
-$(dirname $0)/stream_emmc.sh | tar -xvO | gzip -1 -v > $DOWNLINK_PATH/$stored_filename.gz
+$(dirname $0)/stream_emmc.sh | tar -xvO | gzip -1 -v > $DOWNLINK_PATH/exp266_restored_${stored_filename}.gz
 
 # echo "### Content of the restored file:"
 # gnu_tar.tar tvf $DOWNLINK_PATH/$stored_filename.tar.gz
