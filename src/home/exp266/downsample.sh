@@ -40,11 +40,21 @@ lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index+1)))
 
 
 MOTD="
+
+  ## Stored recording parameters:
+
   Stored filename:  $stored_filename;
-  Center frequency: $f_center MHz;
+  Center frequency: $f_center GHz  ($(python3 -c "print($f_center*1000)"));
   Sampling Rate:    $sampling_realvalue MHz (id: $f_sampling_index);
   Low Pass filter:  $lpf_realvalue MHz (id: $lpf_index);
   Gain:             $gain dB;
+
+  ## Downsampling parameters:
+
+  New frequency:    $(python3 -c "print((($f_center)+downsample_shift/1000000000))") GHz;
+  Shift:            $(python3 -c "print($downsample_shift/1000)") kHz;
+  Bandwidth         $(python3 -c "print($downsample_rate/1000)") kHz;
+  
 "
 echo "$MOTD"
 
@@ -54,3 +64,7 @@ filename=sdr_exp266_downsampled-f_c=${fc}-shift=${downsample_shift}-fs=${downsam
 
 ## Works on EM:
 dd if=/dev/mmcblk0 bs=512 skip=13680640 count=376832 | gnu_tar.tar -xvO | bin/iq_toolbox/iq_mix -s $sampling_Hz -m $downsample_shift | bin/iq_toolbox/iq_decimate -s $sampling_Hz -f $downsample_rate -o $OUTPUT/$filename
+
+if [[ $downsample_waterfall == true ]]; then
+  ./waterfall.sh $OUTPUT/$filename $OUTPUT
+fi
