@@ -46,9 +46,9 @@ downsample_cutoff_frequency=$(awk -F "=" '/downsample_cutoff_frequency/ {printf 
 # Print metadata
 
 sampling_Hz=$(python3 -c "print(round($sampling_realvalue*1000000))")
-decimation_rate=$(python3 -c "print($sampling_Hz/$downsample_cutoff_frequency)")
-output_sample_rate=$(python3 -c "print($sampling_Hz/$decimation_rate)");
-new_center=$(python3 -c "print(round($f_center+$downsample_shift/1000000000))")
+decimation_rate=$(python3 -c "print(int($sampling_Hz/$downsample_cutoff_frequency))")
+output_sample_rate=$(python3 -c "print(int($sampling_Hz/$decimation_rate))");
+new_center=$(python3 -c "print($f_center*1000+$downsample_shift/1000000)")
 
 MOTD="
 
@@ -64,7 +64,7 @@ MOTD="
 
   Cutoff:           $downsample_cutoff_frequency Hz;
   Shift:            $downsample_shift Hz;
-  New frequency:    $new_center GHz;
+  New frequency:    $new_center MHz;
   New sampling rate:$output_sample_rate Hz;
   
 "
