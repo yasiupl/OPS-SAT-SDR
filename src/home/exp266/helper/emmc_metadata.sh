@@ -29,12 +29,6 @@ sampling_realvalue=$(echo $samp_freq_index_lookup | cut -d " " -f $(($f_sampling
 lpf_realvalue=$(echo $lpf_bw_cfg_lookup | cut -d " " -f $(($lpf_index+1)))
 
 # Print metadata
-
-sampling_Hz=$(python3 -c "print(round($sampling_realvalue*1000000))")
-decimation_rate=$(python3 -c "print(int($sampling_Hz/$downsample_cutoff_frequency))")
-output_sample_rate=$(python3 -c "print(int($sampling_Hz/$decimation_rate))");
-new_center=$(python3 -c "print($f_center*1000+$downsample_shift/1000000)")
-
 MOTD="
 
   ## Stored recording parameters:
