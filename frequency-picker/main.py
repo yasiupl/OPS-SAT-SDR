@@ -68,19 +68,21 @@ class ImageLabel(QLabel):
                                     abs(pos1[0] - pos2[0]), abs(pos1[1] - pos2[1]))
             self.update_selected_box()
             self.main_window().status_label.setText(f"Box: {self.selected_box.width()}x{self.selected_box.height()} at ({self.selected_box.x()}, {self.selected_box.y()})")
+            self.main_window().calculate()
         
         if len(self.selected_positions) > 2:
-            self.selected_positions = []
-            self.selected_box = QRect()
+            self.main_window().reset()
+            self.main_window().status_label.setText(f"Reset.")
+            self.selected_positions.append((x, y))
 
-        self.main_window().calculate()
+        
 
 
 class ImageSelector(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Selector")
-        self.setFixedSize(1800, 1600)
+        self.setFixedSize(1900, 1000)
 
         self.image_label = ImageLabel(self)
         self.image_label.setAlignment(Qt.AlignCenter)
@@ -97,7 +99,7 @@ class ImageSelector(QMainWindow):
         position_layout = QVBoxLayout()
         layout.addLayout(position_layout)
 
-        self.frequency_shift_label = QLabel("Resampling shift [Hz]", self)
+        self.frequency_shift_label = QLabel("Downsampling shift [Hz] - Insert into EXP266 config.", self)
         position_layout.addWidget(self.frequency_shift_label)
 
         self.frequency_shift = QLineEdit(self)
@@ -105,25 +107,40 @@ class ImageSelector(QMainWindow):
         self.frequency_shift.setReadOnly(True)
 
 
-        self.cutoff_frequency_label = QLabel("Resampling cut-off frequency [Hz]", self)
+        self.cutoff_frequency_label = QLabel("Downsampling cut-off frequency [Hz] - Insert into EXP266 config.", self)
         position_layout.addWidget(self.cutoff_frequency_label)
 
         self.cutoff_frequency = QLineEdit(self)
         position_layout.addWidget(self.cutoff_frequency)
         self.cutoff_frequency.setReadOnly(True)
 
+        self.output_sampling_label = QLabel("Output sample rate [Hz] - Use this to read the samples from now on!", self)
+        position_layout.addWidget(self.output_sampling_label)
 
-        self.sampling_rate_label = QLabel("Sampling Rate", self)
+        self.output_sampling = QLineEdit(self)
+        position_layout.addWidget(self.output_sampling)
+        self.output_sampling.setReadOnly(True)
+
+        self.output_size_label = QLabel("Probable downsampling output size [MB]", self)
+        position_layout.addWidget(self.output_size_label)
+
+        self.output_size = QLineEdit(self)
+        position_layout.addWidget(self.output_size)
+        self.output_size.setReadOnly(True)
+
+
+        self.sampling_rate_label = QLabel("Input Sampling Rate - SDR Setting", self)
         position_layout.addWidget(self.sampling_rate_label)
 
         self.sampling_rate = QLineEdit(self)
+        self.sampling_rate.setText("1500000")
         position_layout.addWidget(self.sampling_rate)
 
-        self.num_samples_label = QLabel("Number of Samples", self)
-        position_layout.addWidget(self.num_samples_label)
+        # self.num_samples_label = QLabel("Number of Samples", self)
+        # position_layout.addWidget(self.num_samples_label)
 
-        self.num_samples = QLineEdit(self)
-        position_layout.addWidget(self.num_samples)
+        # self.num_samples = QLineEdit(self)
+        # position_layout.addWidget(self.num_samples)
 
         central_widget = QWidget()
         central_widget.setLayout(layout)
@@ -132,6 +149,10 @@ class ImageSelector(QMainWindow):
         self.load_button = QPushButton("Load Image", self)
         self.load_button.clicked.connect(self.load_image)
         layout.addWidget(self.load_button)
+
+        self.calculate_buton = QPushButton("Calculate", self)
+        self.calculate_buton.clicked.connect(self.calculate)
+        layout.addWidget(self.calculate_buton)
 
         self.reset_button = QPushButton("Reset", self)
         self.reset_button.clicked.connect(self.reset)
@@ -158,7 +179,7 @@ class ImageSelector(QMainWindow):
         waterfall_center = waterfall_width/2
 
         waterfall_sampling_rate = int(self.sampling_rate.text() or 0)
-        waterfall_samples = int(self.num_samples.text() or 0)
+        #waterfall_samples = int(self.num_samples.text() or 0)
         
         waterfall_bandwidth=waterfall_sampling_rate/2
 
@@ -172,14 +193,21 @@ class ImageSelector(QMainWindow):
             signal_bandwidth = signal_frequency_span[1] - signal_frequency_span[0]
 
             signal_offset_normalized = (signal_center - waterfall_center) / (waterfall_width / 2)
-            signal_offset_frequency = signal_offset_normalized * (waterfall_bandwidth / 2)
+            signal_offset_frequency = signal_offset_normalized * waterfall_bandwidth
 
-            signal_cutoff_frequency_normalized = (signal_bandwidth/2) / (waterfall_width / 2)
-            signal_cutoff_frequency = signal_cutoff_frequency_normalized * (waterfall_bandwidth / 2)
+            signal_cutoff_frequency_normalized = signal_bandwidth / waterfall_width
+            signal_cutoff_frequency = signal_cutoff_frequency_normalized * waterfall_bandwidth
 
-            self.frequency_shift.setText(str(signal_offset_frequency))
 
-            self.cutoff_frequency.setText(str(signal_cutoff_frequency))
+            signal_decimation_rate = int(waterfall_sampling_rate / signal_cutoff_frequency)
+            
+            output_sample_rate = waterfall_sampling_rate / signal_decimation_rate
+            output_size_mb = output_sample_rate * 4 / (1024*1024) 
+
+            self.frequency_shift.setText(str(round(signal_offset_frequency)))
+            self.cutoff_frequency.setText(str(round(signal_cutoff_frequency)))
+            self.output_sampling.setText(str(round(output_sample_rate)))
+            self.output_size.setText(str(output_size_mb * 20))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
