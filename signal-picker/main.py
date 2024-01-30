@@ -81,7 +81,7 @@ class ImageLabel(QLabel):
 class ImageSelector(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Image Selector")
+        self.setWindowTitle("[EXP266] Signal picker")
         self.setFixedSize(1900, 1000)
 
         self.image_label = ImageLabel(self)
