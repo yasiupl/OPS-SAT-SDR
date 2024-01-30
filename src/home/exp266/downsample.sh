@@ -12,6 +12,9 @@ DATE=$(date +"%Y%m%d_%H%M%S")
 OUT_FOLDER=${1:-"toGround/downsample_${DATE}"}
 mkdir -p $OUT_FOLDER
 
+downsample_shift=$(awk -F "=" '/downsample_shift/ {printf "%s",$2}' $CONFIG_FILE)
+downsample_cutoff_frequency=$(awk -F "=" '/downsample_cutoff_frequency/ {printf "%s",$2}' $CONFIG_FILE)
+
 ## Static config
 samp_freq_index_lookup="1.5 1.75 3.5 3 3.84 5 5.5 6 7 8.75 10 12 14 20 24 28 32 36 40 60 76.8 80" # MHz
 lpf_bw_cfg_lookup="14 10 7 6 5 4.375 3.5 3 2.75 2.5 1.92 1.5 1.375 1.25 0.875 0.75" # MHz

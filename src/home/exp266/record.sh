@@ -80,13 +80,13 @@ fi
 ## Start recording
 echo "#### Start Recording."
 #export LD_PRELOAD="$LIB_PATH/libfftw3.so.3;$LIB_PATH/libsdr_api.so;$LIB_PATH/libsepp_api_core.so;$LIB_PATH/libsepp_ic.so"
-$BINARY_PATH/$exp202_binary running_config.ini
-mv running_config.ini $OUTPUT_PATH/
+$BINARY_PATH/$exp202_binary $EXP_PATH/running_config.ini
+tar --append --list -f $EXP_PATH/running_config.ini $RECORDING_PATH
+mv $EXP_PATH/running_config.ini $OUTPUT_PATH/
 #export LD_PRELOAD=""
 
 echo "#### Recording finished! File: $RECORDING_PATH"
 
-set +e
 
 ## Process the recording
 waterfall_render=$(awk -F "=" '/waterfall_render/ {printf "%s",$2}' $CONFIG_FILE)
@@ -98,5 +98,6 @@ if [[ $waterfall_render == true ]]; then
 fi
 
 ## Cleanup
+set +e
 echo "#### Cleaning up"
 export LD_PRELOAD=""
