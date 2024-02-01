@@ -3,14 +3,15 @@
 commands=$1
 
 BRANCH=master
-IMAGE=gitlab.esa.int:4567/ops-sat/sepp-ci-docker/sepp-ci-docker
-WORKDIR=/home/yasiu/sdr
+IMAGE=gitlab.com/esa/nmf/ops-sat-sepp-ci-docker
+WORKDIR=$(dirname $0)/../
 CONTAINER=sepp_build
 
 installed=`docker image ls | grep $IMAGE`
 if [ -z "$installed" ]; then
     echo SEPP CI Docker not present, installing...
-    docker run -it --entrypoint /bin/bash --name $CONTAINER -u 0 -v $WORKDIR:/home/user/share $IMAGE:$BRANCH
+    #docker build -t $CONTAINER ./ops-sat-sepp-ci-docker 
+    docker run -it --entrypoint /bin/bash --name $CONTAINER -u 0 -v $WORKDIR:/home/user/share $CONTAINER
     installed=`docker image ls | grep $IMAGE`
 fi
 echo Found Image: $installed

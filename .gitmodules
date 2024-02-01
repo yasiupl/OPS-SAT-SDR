@@ -16,3 +16,6 @@
 [submodule "dependencies/renderfall"]
 	path = dependencies/renderfall
 	url = https://github.com/TomMladenov/renderfall
+[submodule "dependencies/sepp_build/ops-sat-sepp-ci-docker"]
+	path = dependencies/sepp_build/ops-sat-sepp-ci-docker
+	url = https://gitlab.com/esa/nmf/ops-sat-sepp-ci-docker

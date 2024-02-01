@@ -1,0 +1,1 @@
+echo "ls -ltr" | sftp yasiu@opssat1.esoc.esa.int:/experiments/exp266/fromESOC/ | tail -n1

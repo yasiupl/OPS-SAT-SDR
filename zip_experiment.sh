@@ -12,4 +12,4 @@ cd src/
 zip -r ../delivery/$package_name home/*
 echo "Finished preparing ZIP file"
 cd ..
-ls -lart delivery/$package_name
+ls -rt ./delivery/ | tail -n1
