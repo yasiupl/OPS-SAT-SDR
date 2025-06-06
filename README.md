@@ -69,6 +69,9 @@ Key features of the OPS-SAT platform include:
   * **Advanced and Redundant Systems:** The satellite combines commercial-off-the-shelf (COTS) components with a redundant design to ensure mission safety and fault tolerance.
   * **Open Access for Experimenters:** It provides a safe and reconfigurable platform for external collaborators to run software-based experiments, allowing them to take control of the satellite to test new algorithms and operational techniques.
 
+### Mission Conclusion
+The OPS-SAT-1 mission concluded on May 22, 2024, when the satellite re-entered the Earth's atmosphere and burned up due to natural orbital decay. The satellite remained operational until its final moments, with its telemetry being tracked by the worldwide amateur radio community.
+
 ### Relevant Links
 
   * [ESA's Official OPS-SAT Page](https://www.esa.int/Enabling_Support/Operations/OPS-SAT)
