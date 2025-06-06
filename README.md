@@ -54,10 +54,20 @@ The experiment is designed to be controlled via a simple configuration file (`co
 └── zip_experiment.sh    # Script to package the experiment for deployment
 ```
 
+## Core Dependencies
+The exp266 software relies on these key components:
+
+* [Sidloc SDR Driver](https://gitlab.com/librespacefoundation/ops-sat-sidloc/gr-sidloc-port): The core binary for recording, based on the work from the Libre Space Foundation's SIDLOC experiment, modified to support direct writing to the eMMC.
+
+* [iq_toolbox](https://github.com/emvivre/iq_toolbox): A suite of lightweight, command-line signal processing tools used for filtering and downsampling the raw IQ data on board the satellite.
+
+* [Renderfall](https://github.com/TomMladenov/renderfall): A tool used to generate waterfall diagrams (spectrograms) from the raw IQ samples to create previews of the recordings.
+
+* [microtar](https://github.com/rxi/microtar): A lightweight C library used to create TAR archive headers programmatically, allowing metadata to be saved alongside the raw signal data on the eMMC partition.
+
 ## Real-World Application
 
 The experiment was successfully tested and demonstrated in a real-world scenario in December 2023 during the 37th Chaos Communication Congress (37C3). A voice transmission from a handheld radio was successfully captured by OPS-SAT in orbit, and the recorded data was downlinked and processed using the tools from this repository. This test validated the entire workflow and showcased the project's capabilities in a live demonstration.
-
 
 ## Background
 
