@@ -57,3 +57,22 @@ The experiment is designed to be controlled via a simple configuration file (`co
 ## Real-World Application
 
 The experiment was successfully tested and demonstrated in a real-world scenario in December 2023 during the 37th Chaos Communication Congress (37C3). A voice transmission from a handheld radio was successfully captured by OPS-SAT in orbit, and the recorded data was downlinked and processed using the tools from this repository. This test validated the entire workflow and showcased the project's capabilities in a live demonstration.
+
+
+## Background
+
+OPS-SAT is a 3-unit CubeSat launched by the European Space Agency (ESA) on December 18, 2019, into a 515 km polar, Sun-Synchronous Orbit (SSO). It serves as a flying laboratory for testing and demonstrating cutting-edge space technologies and operational concepts. The mission was conceived to address the "has never flown, will never fly" paradox in the space industry, which often hinders the adoption of innovative software due to the high risks and costs associated with space missions.
+
+Key features of the OPS-SAT platform include:
+
+  * **A Powerful Experimental Processor:** At its core is the Satellite Experimental Processing Platform (SEPP), which features a dual-core ARM Cortex-A9 CPU and a reconfigurable FPGA. This gives it approximately 10 times more computational power than previous ESA spacecraft.
+  * **Advanced and Redundant Systems:** The satellite combines commercial-off-the-shelf (COTS) components with a redundant design to ensure mission safety and fault tolerance.
+  * **Open Access for Experimenters:** It provides a safe and reconfigurable platform for external collaborators to run software-based experiments, allowing them to take control of the satellite to test new algorithms and operational techniques.
+
+### Relevant Links
+
+  * [ESA's Official OPS-SAT Page](https://www.esa.int/Enabling_Support/Operations/OPS-SAT)
+  * [OPS-SAT Picture Gallery on Flickr](https://www.flickr.com/photos/esa_events/albums/72157716491073681/)
+  * [Gunter's Space Page on OPS-SAT](https://space.skyrocket.de/doc_sdat/ops-sat.htm)
+  * [OPS-SAT Reentry Dataset](https://opssat.esa.int/ops-sat-1/reentry_dataset/)
+  * [gr-opssat: GNU Radio module for OPS-SAT](https://github.com/esa/gr-opssat)
