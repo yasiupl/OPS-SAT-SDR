@@ -4,7 +4,7 @@
 
 This repository contains the source code and associated documentation for the Master’s Thesis: "Software Defined Radio Data Processing on Board OPS-SAT Space Laboratory". The project demonstrates a comprehensive software experiment that utilizes the OPS-SAT satellite's Software Defined Radio (SDR) subsystem for in-orbit data acquisition, storage, and processing. It provides the implementations needed for the complete operational cycle, from data capture to efficient downlink, using the Satellite Experimental Processing Platform (SEPP).
 
-[Read the Master Thesis](docs/Software%2520Defined%2520Radio%2520data%2520processing%2520on%2520board%2520OPS-SAT%2520Space%2520Laboratory%2520-%2520Master%2520Thesis,%2520Marcin%2520Jasiukowicz,%2520s176214.pdf)
+[Read the Master Thesis](docs/Software%20Defined%20Radio%20data%20processing%20on%20board%20OPS-SAT%20Space%20Laboratory%20-%20Master%20Thesis%2C%20Marcin%20Jasiukowicz%2C%20s176214.pdf)
 
 [Read short promotional folder of the thesis (Polish)](docs/Jasiukowicz_master-thesis_promo-folder.pdf)
 
