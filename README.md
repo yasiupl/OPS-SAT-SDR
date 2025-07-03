@@ -57,7 +57,7 @@ The experiment is designed to be controlled via a simple configuration file (`co
 ## Core Dependencies
 The exp266 software relies on these key components:
 
-* [Sidloc SDR Driver](https://gitlab.com/librespacefoundation/ops-sat-sidloc/gr-sidloc-port): The core binary for recording, based on the work from the Libre Space Foundation's SIDLOC experiment, modified to support direct writing to the eMMC.
+* [Sidloc SDR Driver](https://gitlab.com/librespacefoundation/ops-sat-sidloc/ops-sat-sidloc-sw): The core binary for recording, based on the work from the Libre Space Foundation's SIDLOC experiment, modified to support direct writing to the eMMC.
 
 * [iq_toolbox](https://github.com/emvivre/iq_toolbox): A suite of lightweight, command-line signal processing tools used for filtering and downsampling the raw IQ data on board the satellite.
 
@@ -84,7 +84,7 @@ The OPS-SAT-1 mission concluded on May 22, 2024, when the satellite re-entered t
 
 ### Relevant Links
 
-  * [ESA's Official OPS-SAT Page](https://www.esa.int/Enabling_Support/Operations/OPS-SAT)
+  * [ESA's Official OPS-SAT Page](https://opssat1.esoc.esa.int/)
   * [OPS-SAT Picture Gallery on Flickr](https://www.flickr.com/photos/esa_events/albums/72157716491073681/)
   * [Gunter's Space Page on OPS-SAT](https://space.skyrocket.de/doc_sdat/ops-sat.htm)
   * [OPS-SAT Reentry Dataset](https://opssat.esa.int/ops-sat-1/reentry_dataset/)
