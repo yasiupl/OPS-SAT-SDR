@@ -84,7 +84,8 @@ figure img { display: block; margin: 0 auto; max-width: 100%; }
 figcaption { font-size: 18pt; line-height: 1.15; color: #4a5f86; margin-top: 1mm; font-style: italic; }
 .pair { display: flex; gap: 4mm; align-items: flex-end; }
 .pair > figure { flex: 1; margin-top: 0; }
-a { color: var(--blue-dark); text-decoration: none; font-weight: 600; }
+a { color: inherit; text-decoration: none; font-weight: 600; }
+.content a { color: var(--blue-dark); }
 
 /* vector re-drawing of the TAR record layout */
 .tar { display: flex; height: 21mm; font-family: "SS3", sans-serif; font-weight: 700; font-size: 13.5pt; line-height: 1.05; color: #3a2200; }
@@ -102,13 +103,13 @@ footer {
 footer .left { flex: 1; min-width: 0; }
 footer .left .conf { font-weight: 700; font-size: 23pt; }
 footer .left .conf div { white-space: nowrap; }
-footer .right { flex: none; text-align: right; }
-footer .doi { font-weight: 700; font-size: 25pt; }
-footer .qrurl { font-weight: 600; font-size: 23pt; margin-top: 1.5mm; white-space: nowrap; }
+footer .right { flex: none; text-align: right; max-width: 72mm; }
+footer .qrcaption { font-size: 21pt; font-weight: 600; line-height: 1.25; }
 footer .qrwrap { flex: none; display: flex; align-items: center; }
-footer .qr { background: #fff; padding: 2.5mm; width: 46mm; height: 46mm; }
+footer a.qr { background: #fff; padding: 2.5mm; width: 46mm; height: 46mm; display: block; }
 footer .qr img { width: 100%; height: 100%; display: block; }
-footer a { color: #fff; font-weight: 600; }
+footer a { color: inherit; font-weight: 600; }
+header a { color: inherit; }
 </style>
 </head>
 <body>
@@ -117,7 +118,7 @@ footer a { color: #fff; font-weight: 600; }
   <div class="logo"><img src="img/logo_opssat.png" alt="OPS-SAT mission logo"></div>
   <div class="titles">
     <h1>Software Defined Radio data processing on board OPS-SAT Space Laboratory</h1>
-    <div class="author">Marcin Jasiukowicz</div>
+    <div class="author"><a href="https://jasiukowicz.pl">Marcin Jasiukowicz</a></div>
     <div class="affil">Gdańsk University of Technology, Poland</div>
   </div>
   <div class="photo"><img src="img/author.png" alt="Marcin Jasiukowicz"></div>
@@ -213,17 +214,16 @@ footer a { color: #fff; font-weight: 600; }
 <footer>
   <div class="left">
     <div class="conf">
-      <div>75th International Astronautical Congress (IAC 2024), Milan, Italy, 14–18 October 2024</div>
-      <div>Paper IAC-24,B6,IPB,15,x82617 · IAF Space Operations Symposium, Interactive Presentations</div>
+      <div><a href="https://www.iafastro.org/events/iac/international-astronautical-congress-2024/">75th International Astronautical Congress (IAC 2024)</a>, Milan, Italy, 14–18 October 2024</div>
+      <div>Paper <a href="https://dl.iafastro.directory/event/IAC-2024/paper/82617/">IAC-24,B6,IPB,15,x82617</a> · IAF Space Operations Symposium, Interactive Presentations</div>
     </div>
-    <div>ORCID: <a href="https://orcid.org/0000-0001-8822-3564">0000-0001-8822-3564</a> · Source code: <a href="https://github.com/yasiupl/opssat-sdr">github.com/yasiupl/opssat-sdr</a></div>
-    <div>© 2024 Marcin Jasiukowicz. Licensed under CC BY 4.0, except third-party images (©ESA and others as credited).</div>
+    <div>ORCID: <a href="https://orcid.org/0000-0001-8822-3564">0000-0001-8822-3564</a> · DOI: <a href="https://doi.org/{{DOI}}">{{DOI}}</a></div>
+    <div>© 2024 <a href="https://jasiukowicz.pl">Marcin Jasiukowicz</a>. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, except third-party images (©ESA and others as credited).</div>
   </div>
   <div class="right">
-    <div class="doi">DOI: {{DOI}}</div>
-    <div class="qrurl">Source code (QR) → <a href="https://github.com/yasiupl/opssat-sdr">github.com/yasiupl/opssat-sdr</a></div>
+    <div class="qrcaption">Scan the QR code to view the source code</div>
   </div>
-  <div class="qrwrap"><div class="qr"><img src="img/qr_github.svg" alt="QR code: github.com/yasiupl/opssat-sdr"></div></div>
+  <div class="qrwrap"><a class="qr" href="https://github.com/yasiupl/opssat-sdr"><img src="img/qr_github.svg" alt="QR code: github.com/yasiupl/opssat-sdr"></a></div>
 </footer>
 
 </body>
