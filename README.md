@@ -4,7 +4,7 @@
 
 This repository contains the source code and associated documentation for the Master’s Thesis: "Software Defined Radio Data Processing on Board OPS-SAT Space Laboratory". The project demonstrates a comprehensive software experiment that utilizes the OPS-SAT satellite's Software Defined Radio (SDR) subsystem for in-orbit data acquisition, storage, and processing. It provides the implementations needed for the complete operational cycle, from data capture to efficient downlink, using the Satellite Experimental Processing Platform (SEPP).
 
-[Read the Master Thesis](docs/Software%20Defined%20Radio%20data%20processing%20on%20board%20OPS-SAT%20Space%20Laboratory%20-%20Master%20Thesis%2C%20Marcin%20Jasiukowicz%2C%20s176214.pdf)
+[Read the Master Thesis](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf)
 
 [Read short promotional folder of the thesis (Polish)](docs/Jasiukowicz_master-thesis_promo-folder.pdf)
 
@@ -36,7 +36,7 @@ The experiment is designed to be controlled via a simple configuration file (`co
 ├── automax/             # Automation scripts for the OPS-SAT Mission Control Team
 ├── dependencies/        # Dependencies for building and testing the project
 ├── delivery/            # Zipped experiment packages for deployment
-├── docs/                # Project documentation, including the Master's Thesis
+├── docs/                # Thesis, IAC 2024 poster (with source), and related docs
 ├── signal-picker/       # Python-based GUI tool for selecting signals from waterfall plots
 ├── src/                 # Source code for the experiment
 │   └── home/
@@ -64,6 +64,13 @@ The exp266 software relies on these key components:
 * [Renderfall](https://github.com/TomMladenov/renderfall): A tool used to generate waterfall diagrams (spectrograms) from the raw IQ samples to create previews of the recordings.
 
 * [microtar](https://github.com/rxi/microtar): A lightweight C library used to create TAR archive headers programmatically, allowing metadata to be saved alongside the raw signal data on the eMMC partition.
+
+## Publications
+
+* Master's thesis: [Software Defined Radio Data Processing on board of OPS-SAT Space Laboratory](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf)
+* Conference poster: [IAC 2024, Milan](docs/poster/jasiukowicz_2024_iac_poster_opssat_sdr.pdf) — paper IAC-24,B6,IPB,15,x82617 ([source](docs/poster/src/))
+
+Licensed under CC BY 4.0, except third-party images (©ESA and others as credited).
 
 ## Real-World Application
 
