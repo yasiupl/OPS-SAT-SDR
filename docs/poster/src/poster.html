@@ -55,22 +55,26 @@ main {
   position: absolute; left: var(--margin); right: var(--margin);
   top: calc(var(--margin) + var(--header-h) + 6mm);
   bottom: calc(var(--footer-h) + 6mm);
-  column-count: 3; column-gap: var(--gap); column-fill: auto;
+  display: flex; align-items: stretch; gap: var(--gap);
+}
+.col {
+  flex: 1 1 0; min-width: 0; height: 100%;
+  display: flex; flex-direction: column; gap: var(--gap);
 }
 section {
-  background: #fff; margin-bottom: 6mm;
-  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background: #fff;
   box-shadow: 0 0 0 0.4mm rgba(0,0,0,.25);
+  display: flex; flex-direction: column;
+  flex: 1 1 auto; min-height: 0;
 }
 section.lav { background: var(--lav); }
-#challenges, #results { break-before: column; }
 section h2 {
   font-family: "RC", sans-serif; font-weight: 500; font-size: 46pt; line-height: 1.15;
   background: var(--blue); color: #fff; padding: 2.5mm 6mm 2.5mm;
-  break-after: avoid;
+  flex: none;
 }
-.content { padding: 3mm 6mm 1.5mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-section p { margin: 0 0 2.2mm; text-align: left; hyphens: manual; orphans: 2; widows: 2; }
+.content { padding: 3mm 6mm 3mm; flex: 1; }
+section p { margin: 0 0 2.2mm; text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 6 3 3; hyphenate-limit-lines: 2; orphans: 2; widows: 2; }
 section h3 { font-family: "SS3", sans-serif; font-weight: 600; font-size: 36pt; line-height: 1.1; color: var(--text); margin: 3mm 0 1mm; break-after: avoid; }
 figure { margin: 1.5mm 0 3mm;}
 figure.fr { float: right; margin: 1mm 0 2mm 5mm; }
@@ -100,9 +104,10 @@ footer .left .conf { font-weight: 700; font-size: 23pt; }
 footer .left .conf div { white-space: nowrap; }
 footer .right { flex: none; text-align: right; }
 footer .doi { font-weight: 700; font-size: 25pt; }
-footer .qr { flex: none; background: #fff; padding: 2.5mm; width: 46mm; height: 46mm; }
+footer .qrwrap { flex: none; display: flex; flex-direction: column; align-items: flex-end; }
+footer .qr { background: #fff; padding: 2.5mm; width: 46mm; height: 46mm; }
 footer .qr img { width: 100%; height: 100%; display: block; }
-footer .qrlabel { font-size: 13pt; text-align: center; margin-top: 0.5mm; }
+footer .qrlabel { font-size: 13pt; text-align: right; margin-top: 0.5mm; }
 footer a { color: #fff; font-weight: 600; }
 </style>
 </head>
@@ -120,82 +125,88 @@ footer a { color: #fff; font-weight: 600; }
 
 <main>
 
+<div class="col">
 <section id="mission-background">
   <h2>Mission Background</h2>
   <div class="content">
     <figure class="fr" style="width:44%;"><img src="img/fig1_mission_patch.jpg" alt="OPS-SAT mission patch with partners" style="width:100%"><figcaption>OPS-SAT mission patch with partner logos. Image: ESA.</figcaption></figure>
-    <p>OPS-SAT 1 satellite, launched in 2019, is ESA's first mission specifically designed as a flying laboratory for testing and demonstrating cutting-edge space technologies and operational concepts. The mission boasts a unique architecture by joining cutting-edge Commercial-off-the-shelf (COTS) hardware and redundant design ensuring safety of operations at any time.</p>
+    <p>OPS-SAT 1 satel­lite, launched in 2019, is ESA's first mis­sion specif­i­cally designed as a fly­ing lab­o­ra­tory for test­ing and demon­strat­ing cut­ting-edge space tech­nolo­gies and oper­a­tional con­cepts. The mis­sion boasts a unique archi­tec­ture by join­ing cut­ting-edge Commercial-off-the-shelf (COTS) hard­ware and redun­dant design ensur­ing safety of oper­a­tions at any time.</p>
     
-    <p>The purpose of the mission is to provide a safe and reconfigurable platform for in-orbit experimentation. OPS-SAT allows for testing of new software, and operational techniques in a real space environment without jeopardizing larger, more expensive missions. To accelerate the development and validation of future space technologies, OPS-SAT enables rapid prototyping and in-flight testing, helping mature promising technologies, like high-speed communication protocols, and innovative mission operations software, for future ESA missions.</p>
+    <p>The pur­pose of the mis­sion is to pro­vide a safe and recon­fig­urable plat­form for in-orbit exper­i­men­ta­tion. OPS-SAT allows for test­ing of new soft­ware, and oper­a­tional tech­niques in a real space envi­ron­ment with­out jeop­ar­diz­ing larger, more expen­sive mis­sions. To accel­er­ate the devel­op­ment and val­i­da­tion of future space tech­nolo­gies, OPS-SAT enables rapid pro­to­typ­ing and in-flight test­ing, help­ing mature promis­ing tech­nolo­gies, like high-speed com­mu­ni­ca­tion pro­to­cols, and inno­va­tive mis­sion oper­a­tions soft­ware, for future ESA mis­sions.</p>
   </div>
 </section>
 
 <section id="ops-sat">
   <h2>OPS-SAT Space Laboratory</h2>
   <div class="content">
-    <p>The satellite is a 3 unit CubeSat, measuring 30x10x10 cm. The satellite has two deployable solar panel arrays on its side. The overall systems architecture of the satellite is split into the Satellite Bus and the Payload section. To ensure robustness and mission success, OPS-SAT incorporates redundancy in critical systems. The spacecraft is designed to be highly fault-tolerant, capable of withstanding errors in experimental software and even hardware failures. The architecture continuously monitors for anomalies and can automatically initiate recovery procedures to ensure the satellite's survival.</p>
+    <p>The satel­lite is a 3 unit CubeSat, mea­sur­ing 30x10x10 cm. The satel­lite has two deploy­able solar panel arrays on its side. The over­all sys­tems archi­tec­ture of the satel­lite is split into the Satellite Bus and the Payload sec­tion. To ensure robust­ness and mis­sion suc­cess, OPS-SAT incor­po­rates redun­dancy in crit­i­cal sys­tems. The space­craft is designed to be highly fault-tol­er­ant, capa­ble of with­stand­ing errors in exper­i­men­tal soft­ware and even hard­ware fail­ures. The archi­tec­ture con­tin­u­ously mon­i­tors for anom­alies and can auto­mat­i­cally ini­ti­ate recov­ery pro­ce­dures to ensure the satel­lite's sur­vival.</p>
     <figure class="fr" style="width:50%"><img src="img/fig2_opssat_photo.jpg" alt="OPS-SAT flight hardware with deployed solar panels" style="width:100%"><figcaption>OPS-SAT 3U CubeSat with deployed solar panels.</figcaption></figure>
-    <p>At the heart of OPS-SAT, the Satellite Experimental Processing Platform integrates a Hard Processor System (HPS) with an FPGA (Field Programmable Gate Array) fabric. The HPS includes a dual-core ARM Cortex-A9 800 MHz CPU with 1 GB RAM. The computing platform is paired with 16 GB of eMMC memory used for persistent storage.</p>
-    <p>The HPS runs GNU/Linux Operating System allowing for a great variety of modern software to be run. The OS comes with a set of tools and abstractions known to developers working in many industries outside of the space sector. The available resources allow for high-level programming languages like Python and Java to be run. The FPGA component is reconfigurable, meaning it can be reprogrammed in-flight to adapt to different experiments and processing needs. Additionally, many of the signal lines and buses connecting the various subsystems have been connected to the fabric.</p>
+    <p>At the heart of OPS-SAT, the Satellite Experimental Processing Platform inte­grates a Hard Processor System (HPS) with an FPGA (Field Programmable Gate Array) fab­ric. The HPS includes a dual-core ARM Cortex-A9 800 MHz CPU with 1 GB RAM. The com­put­ing plat­form is paired with 16 GB of eMMC mem­ory used for per­sis­tent stor­age.</p>
+    <p>The HPS runs GNU/Linux Operating System allow­ing for a great vari­ety of mod­ern soft­ware to be run. The OS comes with a set of tools and abstrac­tions known to devel­op­ers work­ing in many indus­tries out­side of the space sec­tor. The avail­able resources allow for high-level pro­gram­ming lan­guages like Python and Java to be run. The FPGA com­po­nent is recon­fig­urable, mean­ing it can be repro­grammed in-flight to adapt to dif­fer­ent exper­i­ments and pro­cess­ing needs. Addi­tion­ally, many of the sig­nal lines and buses con­nect­ing the var­i­ous sub­sys­tems have been con­nected to the fab­ric.</p>
     <figure><img src="img/fig3_block_diagram.jpg" alt="OPS-SAT system block diagram" style="width:92%"><figcaption>OPS-SAT system block diagram: Satellite Bus and Payload. Image: ESA.</figcaption></figure>
-    <p>The SDR on OPS-SAT is an experimental radio receiver based on Lime Microsystems LMS6002D chip, capable of processing a wide range of frequencies from 300 MHz to 3 GHz with an adjustable sampling rate from 750 kHz to 20 MHz. The SDR frontend shares one of the antennas used with the Nanocom subsystems, tuned to the same frequency. This effectively limits the operational range to the UHF 70 cm band at around 400 MHz. The frontend includes an optional low pass filter tuned at 1.575 GHz allowing for filtering out more powerful signals. After the filter, a Low Noise Amplifier (LNA) is placed. It provides a gain of approximately 20 dB for the UHF band. Overall the system achieves -98 dBm sensitivity. The SDR is connected to the SEPP FPGA via a 12-bit parallel bus, allowing it to capture and buffer in-phase and quadrature (IQ) samples of the received Radio Frequency (RF) signal. The samples can be used by the HPS using direct memory access (DMA).</p>
+    <p>The SDR on OPS-SAT is an exper­i­men­tal radio receiver based on Lime Microsystems LMS6002D chip, capa­ble of pro­cess­ing a wide range of fre­quen­cies from 300 MHz to 3 GHz with an adjustable sam­pling rate from 750 kHz to 20 MHz. The SDR fron­tend shares one of the anten­nas used with the Nanocom sub­sys­tems, tuned to the same fre­quency. This effec­tively lim­its the oper­a­tional range to the UHF 70 cm band at around 400 MHz. The fron­tend includes an optional low pass fil­ter tuned at 1.575 GHz allow­ing for fil­ter­ing out more pow­er­ful sig­nals. After the fil­ter, a Low Noise Amplifier (LNA) is placed. It pro­vides a gain of approx­i­mately 20 dB for the UHF band. Over­all the sys­tem achieves -98 dBm sen­si­tiv­ity. The SDR is con­nected to the SEPP FPGA via a 12-bit par­al­lel bus, allow­ing it to cap­ture and buf­fer in-phase and quad­ra­ture (IQ) sam­ples of the received Radio Frequency (RF) sig­nal. The sam­ples can be used by the HPS using direct mem­ory access (DMA).</p>
   </div>
 </section>
+</div>
 
+<div class="col">
 <section id="challenges" class="lav">
   <h2>Challenges and Opportunities</h2>
   <div class="content">
-    <p>Over its four years in orbit, OPS-SAT has developed specific operational characteristics, some of which have evolved due to the satellite's gradual degradation, while others have improved thanks to the development of new tools that facilitate a variety of repetitive procedures.</p>
+    <p>Over its four years in orbit, OPS-SAT has devel­oped spe­cific oper­a­tional char­ac­ter­is­tics, some of which have evolved due to the satel­lite's grad­ual degra­da­tion, while oth­ers have improved thanks to the devel­op­ment of new tools that facil­i­tate a vari­ety of repet­i­tive pro­ce­dures.</p>
     <h3>Degradation of eMMC</h3>
-    <p>Over time, the SEPP's eMMC memory in OPS-SAT began to degrade due to radiation exposure and frequent use. This caused memory corruption and failures, limiting the system's ability to store and retrieve data. To address this, the Mission Control Team implemented a workaround using volatile RAM storage for temporary operations and developed custom memory mapping techniques to use non-corrupted portions of the eMMC. These solutions extended the operational life of the memory, though with reduced capacity.</p>
+    <p>Over time, the SEPP's eMMC mem­ory in OPS-SAT began to degrade due to radi­a­tion expo­sure and fre­quent use. This caused mem­ory cor­rup­tion and fail­ures, lim­it­ing the sys­tem's abil­ity to store and retrieve data. To address this, the Mission Control Team imple­mented a work­around using volatile RAM stor­age for tem­po­rary oper­a­tions and devel­oped cus­tom mem­ory map­ping tech­niques to use non-cor­rupted por­tions of the eMMC. These solu­tions extended the oper­a­tional life of the mem­ory, though with reduced capac­ity.</p>
     <h3>SDR Streaming Interface (SIDLOC)</h3>
-    <p>The SIDLOC experiment, developed by the Libre Space Foundation, required continuous IQ data streaming from the OPS-SAT's SDR subsystem. To achieve this, a custom FPGA implementation was created, incorporating Scatter-Gather DMA and a Dual Clock FIFO buffer, which allowed for continuous streaming of radio data. Although the experiment still relied on downlinking raw data for processing on the ground, it paved the way for real-time, high-bandwidth SDR operations on board small satellites.</p>
+    <p>The SIDLOC exper­i­ment, devel­oped by the Libre Space Foundation, required con­tin­u­ous IQ data stream­ing from the OPS-SAT's SDR sub­sys­tem. To achieve this, a cus­tom FPGA imple­men­ta­tion was cre­ated, incor­po­rat­ing Scatter-Gather DMA and a Dual Clock FIFO buf­fer, which allowed for con­tin­u­ous stream­ing of radio data. Although the exper­i­ment still relied on down­link­ing raw data for pro­cess­ing on the ground, it paved the way for real-time, high-band­width SDR oper­a­tions on board small satel­lites.</p>
     <h3>SpaceWire</h3>
-    <p>The integration of SpaceWire protocol between the SEPP and the CCSDS Engine allowed for high-speed data transfer within OPS-SAT. Initially, communication was limited to slower CAN Bus, but post-launch, SpaceWire was deployed over a previously unused LVDS line, enabling Ethernet-like connectivity for remote management of the satellite’s processing platform. This upgrade drastically improved data throughput and allowed for faster software updates and file transfers, enhancing the overall flexibility and responsiveness of the mission.</p>
+    <p>The inte­gra­tion of SpaceWire pro­to­col between the SEPP and the CCSDS Engine allowed for high-speed data trans­fer within OPS-SAT. Ini­tially, com­mu­ni­ca­tion was lim­ited to slower CAN Bus, but post-launch, SpaceWire was deployed over a pre­vi­ously unused LVDS line, enabling Ethernet-like con­nec­tiv­ity for remote man­age­ment of the satel­lite’s pro­cess­ing plat­form. This upgrade dras­ti­cally improved data through­put and allowed for faster soft­ware updates and file trans­fers, enhanc­ing the over­all flex­i­bil­ity and respon­sive­ness of the mis­sion.</p>
   </div>
 </section>
 
 <section id="sdr-implementation" class="lav">
   <h2>SDR Experiment Implementation</h2>
   <div class="content">
-    <p>As OPS-SAT's operational constraints evolved, the SDR subsystem faced limitations, initially due to the DMA interface and later from CPU degradation, preventing real-time data processing. To revive SDR experiments, a set of tools and procedures was developed to overcome these issues, making it easier for the Mission Control Team to operate the subsystem. With the decay of OPS-SAT's orbit affecting other experiments, optimizing SDR operations became even more crucial. The experiment was organized into distinct "actions," each addressing specific functions within the experiment lifecycle:</p>
+    <p>As OPS-SAT's oper­a­tional con­straints evolved, the SDR sub­sys­tem faced lim­i­ta­tions, ini­tially due to the DMA inter­face and later from CPU degra­da­tion, pre­vent­ing real-time data pro­cess­ing. To revive SDR exper­i­ments, a set of tools and pro­ce­dures was devel­oped to over­come these issues, mak­ing it eas­ier for the Mission Control Team to oper­ate the sub­sys­tem. With the decay of OPS-SAT's orbit affect­ing other exper­i­ments, opti­miz­ing SDR oper­a­tions became even more cru­cial. The exper­i­ment was orga­nized into dis­tinct "actions," each address­ing spe­cific func­tions within the exper­i­ment life­cy­cle:</p>
     <h3>Record</h3>
-    <p>The Record action focused on capturing radio signals using the SDR subsystem on OPS-SAT. To overcome the limited memory due to the degradation of the SEPP, the recorded samples were directly written to a specific eMMC partition via a modified SDR driver. This approach bypassed the constrained operational memory, but relied on stable portions of the degraded eMMC for storage. The TAR file format has been used for easier data management in the raw memory.</p>
+    <p>The Record action focused on cap­tur­ing radio sig­nals using the SDR sub­sys­tem on OPS-SAT. To over­come the lim­ited mem­ory due to the degra­da­tion of the SEPP, the recorded sam­ples were directly writ­ten to a spe­cific eMMC par­ti­tion via a mod­i­fied SDR driver. This approach bypassed the con­strained oper­a­tional mem­ory, but relied on sta­ble por­tions of the degraded eMMC for stor­age. The TAR file for­mat has been used for eas­ier data man­age­ment in the raw mem­ory.</p>
     <figure>
       <div class="tar"><div class="o">TAR File Header</div><div class="l">TAR Filename Header</div><div class="y">IQ Samples</div><div class="l">TAR Filename Footer</div><div class="o">TAR File Footer</div></div>
       <figcaption>Layout of a recording in the raw eMMC partition.</figcaption>
     </figure>
     <h3>Waterfall</h3>
-    <p>The Waterfall action generated a waterfall plot to visually represent the captured radio spectrum. This allowed operators to quickly identify signals of interest in the recorded data, addressing the challenge of efficiently handling large amounts of raw data. By generating a preview onboard, operators could make informed decisions on which parts of the spectrum to downlink, reducing the volume of data transmitted to Earth and optimizing the limited bandwidth in the SDR streaming interface.</p>
+    <p>The Waterfall action gen­er­ated a water­fall plot to vis­ually rep­re­sent the cap­tured radio spec­trum. This allowed oper­a­tors to quickly iden­tify sig­nals of inter­est in the recorded data, address­ing the chal­lenge of effi­ciently han­dling large amounts of raw data. By gen­er­at­ing a pre­view onboard, oper­a­tors could make informed deci­sions on which parts of the spec­trum to down­link, reduc­ing the vol­ume of data trans­mit­ted to Earth and opti­miz­ing the lim­ited band­width in the SDR stream­ing inter­face.</p>
     <figure><img src="img/fig5_waterfall_preview.png" alt="Waterfall preview with downsampling parameters" style="width:85%"><figcaption>Waterfall preview with the downsampling parameters: signal bandwidth, signal centre frequency, mixing frequency, downsampling bandwidth.</figcaption></figure>
     <h3>Downsampling</h3>
-    <p>The Downsample action was implemented to extract and focus on specific signal frequencies within the captured wideband data. By reducing the sampling rate for certain signals of interest, the file size was drastically reduced, addressing both storage limitations on the eMMC and downlink constraints. This action provided a critical opportunity to process and manage SDR data more effectively, ensuring that only the most relevant data was transmitted back to Earth.</p>
+    <p>The Downsample action was imple­mented to extract and focus on spe­cific sig­nal fre­quen­cies within the cap­tured wide­band data. By reduc­ing the sam­pling rate for cer­tain sig­nals of inter­est, the file size was dras­ti­cally reduced, address­ing both stor­age lim­i­ta­tions on the eMMC and down­link con­straints. This action pro­vided a crit­i­cal oppor­tu­nity to process and man­age SDR data more effec­tively, ensur­ing that only the most rel­e­vant data was trans­mit­ted back to Earth.</p>
   </div>
 </section>
+</div>
 
+<div class="col">
 <section id="results">
   <h2>Results</h2>
   <div class="content">
-    <figure class="fr" style="width:62%"><img src="img/fig6_37c3_demo.png" alt="Handheld radio and phone tracking OPS-SAT during the 37C3 live demonstration" style="width:100%"><figcaption>Live uplink demonstration at 37C3, Hamburg, 29 December 2023.</figcaption></figure>
-    <p>A live demonstration taking place at the 37th Chaos Communication Congress (37C3), one of the leading cybersecurity events in Europe. The test gathered a small audience of fellow amateur radio enthusiasts and members of the Libre Space Foundation, who have developed the Sidloc FPGA image used in this setup. The voice transmission started exactly on December 29th, 2023 at 19:03:38 UTC, the moment the experiment was scheduled on board OPS-SAT.</p>
-    <p>The message included greetings from earth and respective amateur radio callsigns of the operators present. Another transmission has been conducted in parallel including an QSL card transmitted via Slow Scan Television (SSTV) encoding.</p>
+    <figure class="fr" style="width:55%"><img src="img/fig6_37c3_demo.png" alt="Handheld radio and phone tracking OPS-SAT during the 37C3 live demonstration" style="width:100%"><figcaption>Live uplink demonstration at 37C3, Hamburg, 29 December 2023.</figcaption></figure>
+    <p>A live demon­stra­tion tak­ing place at the 37th Chaos Communication Congress (37C3), one of the lead­ing cyber­se­cu­rity events in Europe. The test gath­ered a small audi­ence of fel­low ama­teur radio enthu­si­asts and mem­bers of the Libre Space Foundation, who have devel­oped the Sidloc FPGA image used in this setup. The voice trans­mis­sion started exactly on December 29th, 2023 at 19:03:38 UTC, the moment the exper­i­ment was sched­uled on board OPS-SAT.</p>
+    <p>The mes­sage included greet­ings from earth and respec­tive ama­teur radio call­signs of the oper­a­tors present. Another trans­mis­sion has been con­ducted in par­al­lel includ­ing an QSL card trans­mit­ted via Slow Scan Television (SSTV) encod­ing.</p>
     <figure><img src="img/fig7_37c3_waterfall.png" alt="Waterfall of the 37C3 recording" style="width:100%"><figcaption>Waterfall of the on-board recording (±375 kHz span).</figcaption></figure>
-    <p>The downlink was completed over the S-Band channel in the evening, morning, and next day's evening satellite passes. Each pass another chunk of the recording was available and the transmission could be decoded, confirming the link budget margin was indeed enough to detect the signal on board. The decoded voice signal was quite faint, but enough to distinguish the transmitted message, especially with prior knowledge of its content. The SSTV transmission could not be decoded.</p>
+    <p>The down­link was com­pleted over the S-Band chan­nel in the evening, morn­ing, and next day's evening satel­lite passes. Each pass another chunk of the record­ing was avail­able and the trans­mis­sion could be decoded, con­firm­ing the link bud­get mar­gin was indeed enough to detect the sig­nal on board. The decoded voice sig­nal was quite faint, but enough to dis­tin­guish the trans­mit­ted mes­sage, espe­cially with prior knowl­edge of its con­tent. The SSTV trans­mis­sion could not be decoded.</p>
     <figure><img src="img/fig8_37c3_downsampled.png" alt="Downsampled extract of the transmission" style="width:100%"><figcaption>Downsampled extract (±5 kHz) of the voice transmission.</figcaption></figure>
-    <p>With the full recording on ground, later processing and development of the experiment was conducted on the Engineering Model of OPS-SAT. Just like on the real spacecraft, the recording was loaded into the eMMC in the same fashion as if it would be recorded via SDR. Then the down-sampling action of the experiment could be applied, extracting the transmission at given parameters. The resulting file weighed around 9 MB. If it were conducted on board, it could be downloaded in about the same ground-station time as the waterfall preview of the entire recording.</p>
+    <p>With the full record­ing on ground, later pro­cess­ing and devel­op­ment of the exper­i­ment was con­ducted on the Engineering Model of OPS-SAT. Just like on the real space­craft, the record­ing was loaded into the eMMC in the same fash­ion as if it would be recorded via SDR. Then the down-sam­pling action of the exper­i­ment could be applied, extract­ing the trans­mis­sion at given param­e­ters. The result­ing file weighed around 9 MB. If it were con­ducted on board, it could be down­loaded in about the same ground-sta­tion time as the water­fall pre­view of the entire record­ing.</p>
   </div>
 </section>
 
 <section id="acknowledgements">
   <h2>Acknowledgements and References</h2>
   <div class="content">
-    <p>I extend my sincere thanks to my friends and fellow Mission Control Team members for their support throughout this journey: Vladimir Zelenevskiy, Adrián Calleja Vázquez, Tim Oerther, Rodrigo Laurinovičs, Sam Bammers, Marcin Kovalevskij and Georges Labrèche.</p>
-    <figure class="fr" style="width:60%"><img src="img/fig9_esoc_team.png" alt="OPS-SAT Mission Control Team at ESOC" style="width:100%"><figcaption>OPS-SAT Mission Control Team at ESOC, Darmstadt.</figcaption></figure>
-    <p>Special thanks go to Dave Evans, OPS-SAT Project Manager, for his leadership and guidance.</p>
-    <p>This work would not be possible without the Mission Control Team support, the worldwide community and the Open Source nature of the OPS-SAT ecosystem. Due to a mix of Open Source licensed software being used in the implementation of the SDR experiment, the source code is publicly available in the repository:</p>
+    <p>I extend my sin­cere thanks to my friends and fel­low Mission Control Team mem­bers for their sup­port through­out this jour­ney: Vladimir Zelenevskiy, Adrián Calleja Vázquez, Tim Oerther, Rodrigo Laurinovičs, Sam Bammers, Marcin Kovalevskij and Georges Labrèche.</p>
+    <figure class="fr" style="width:52%"><img src="img/fig9_esoc_team.png" alt="OPS-SAT Mission Control Team at ESOC" style="width:100%"><figcaption>OPS-SAT Mission Control Team at ESOC, Darmstadt.</figcaption></figure>
+    <p>Spe­cial thanks go to Dave Evans, OPS-SAT Project Manager, for his lead­er­ship and guid­ance.</p>
+    <p>This work would not be pos­si­ble with­out the Mission Control Team sup­port, the world­wide com­mu­nity and the Open Source nature of the OPS-SAT ecosys­tem. Due to a mix of Open Source licensed soft­ware being used in the imple­men­ta­tion of the SDR exper­i­ment, the source code is pub­licly avail­able in the repos­i­tory:</p>
     <p><a href="https://github.com/yasiupl/opssat-sdr">https://github.com/yasiupl/opssat-sdr</a></p>
   </div>
 </section>
+</div>
 
 </main>
 
@@ -209,7 +220,7 @@ footer a { color: #fff; font-weight: 600; }
     <div>© 2024 Marcin Jasiukowicz. Licensed under CC BY 4.0, except third-party images (©ESA and others as credited).</div>
   </div>
   <div class="right"><div class="doi">DOI: {{DOI}}</div></div>
-  <div><div class="qr"><img src="img/qr_github.svg" alt="QR code: github.com/yasiupl/opssat-sdr"></div><div class="qrlabel">github.com/yasiupl/opssat-sdr</div></div>
+  <div class="qrwrap"><div class="qr"><img src="img/qr_github.svg" alt="QR code: github.com/yasiupl/opssat-sdr"></div><div class="qrlabel">github.com/yasiupl/opssat-sdr</div></div>
 </footer>
 
 </body>
