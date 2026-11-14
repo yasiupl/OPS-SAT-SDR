@@ -2,9 +2,12 @@
 
 # OPS-SAT SDR: On-board Radio Signal Processing
 
+[![DOI: Master's thesis](https://zenodo.org/badge/DOI/10.5281/zenodo.24229605.svg)](https://doi.org/10.5281/zenodo.24229605)
+[![DOI: IAC 2024 poster](https://zenodo.org/badge/DOI/10.5281/zenodo.24230137.svg)](https://doi.org/10.5281/zenodo.24230137)
+
 This repository contains the source code and associated documentation for the Master’s Thesis: "Software Defined Radio Data Processing on Board OPS-SAT Space Laboratory". The project demonstrates a comprehensive software experiment that utilizes the OPS-SAT satellite's Software Defined Radio (SDR) subsystem for in-orbit data acquisition, storage, and processing. It provides the implementations needed for the complete operational cycle, from data capture to efficient downlink, using the Satellite Experimental Processing Platform (SEPP).
 
-[Read the Master Thesis](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf)
+[Read the Master Thesis](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf) ([doi:10.5281/zenodo.24229605](https://doi.org/10.5281/zenodo.24229605))
 
 [Read short promotional folder of the thesis (Polish)](docs/Jasiukowicz_master-thesis_promo-folder.pdf)
 
@@ -67,8 +70,8 @@ The exp266 software relies on these key components:
 
 ## Publications
 
-* Master's thesis: [Software Defined Radio Data Processing on board of OPS-SAT Space Laboratory](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf)
-* Conference poster: [IAC 2024, Milan](docs/poster/jasiukowicz_2024_iac_poster_opssat_sdr.pdf) — paper IAC-24,B6,IPB,15,x82617 ([source](docs/poster/src/))
+* Master's thesis: [Software Defined Radio Data Processing on board of OPS-SAT Space Laboratory](docs/thesis/jasiukowicz_2024_msc_thesis_opssat_sdr.pdf) — [doi:10.5281/zenodo.24229605](https://doi.org/10.5281/zenodo.24229605)
+* Conference poster: [IAC 2024, Milan](docs/poster/jasiukowicz_2024_iac_poster_opssat_sdr.pdf) — paper IAC-24,B6,IPB,15,x82617 ([source](docs/poster/src/)) — [doi:10.5281/zenodo.24230137](https://doi.org/10.5281/zenodo.24230137)
 
 Licensed under CC BY 4.0, except third-party images (©ESA and others as credited).
 

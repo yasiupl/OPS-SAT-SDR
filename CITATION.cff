@@ -1,0 +1,58 @@
+cff-version: 1.2.0
+message: If you use this software, please cite the Master's thesis. For the IAC 2024 poster, please also cite that work.
+type: software
+title: "OPS-SAT SDR: On-board Radio Signal Processing"
+authors:
+  - family-names: Jasiukowicz
+    given-names: Marcin
+    orcid: "https://orcid.org/0000-0001-8822-3564"
+    affiliation: "Gdańsk University of Technology"
+repository-code: "https://github.com/yasiupl/OPS-SAT-SDR"
+license: CC-BY-4.0
+keywords:
+  - OPS-SAT
+  - software defined radio
+  - SDR
+  - CubeSat
+  - space operations
+preferred-citation:
+  type: thesis
+  title: "Software Defined Radio Data Processing on board of OPS-SAT Space Laboratory"
+  authors:
+    - family-names: Jasiukowicz
+      given-names: Marcin
+      orcid: "https://orcid.org/0000-0001-8822-3564"
+      affiliation: "Gdańsk University of Technology"
+  year: 2024
+  date-released: "2024-12-17"
+  thesis-type: Master's thesis
+  institution:
+    name: "Gdańsk University of Technology"
+  doi: 10.5281/zenodo.24229605
+  url: "https://doi.org/10.5281/zenodo.24229605"
+  languages:
+    - en
+references:
+  - type: conference-paper
+    title: "Software Defined Radio Data Processing on board OPS-SAT Space Laboratory"
+    authors:
+      - family-names: Jasiukowicz
+        given-names: Marcin
+        orcid: "https://orcid.org/0000-0001-8822-3564"
+        affiliation: "Gdańsk University of Technology"
+    year: 2024
+    month: 10
+    conference:
+      name: "75th International Astronautical Congress (IAC 2024)"
+      city: Milan
+      country: IT
+      date-start: 2024-10-14
+      date-end: 2024-10-18
+    doi: 10.5281/zenodo.24230137
+    url: "https://doi.org/10.5281/zenodo.24230137"
+    identifiers:
+      - type: other
+        value: "IAC-24,B6,IPB,15,x82617"
+        description: IAF paper code
+    languages:
+      - en
